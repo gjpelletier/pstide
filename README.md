@@ -11,7 +11,7 @@ Lavelle, J. W., H. O. Mofjeld, et al. (1988). A multiply-connected channel
   with updated observations. Seattle, WA, Pacific Marine Environmental
   Laboratory: 103.
 
-David Finlayson translated the code to Python 2.x in 2004, and included the following paragraphs in a readme file:
+David Finlayson translated the Lavelle and Mofjeld's Fortran code to Python 2.x in 2004, and included the following paragraphs in a readme file:
 
 Hal Mofjeld (Oceanographer, PMEL) maintained the code and updated
 it as languages and hardware have progressed; occasionally helping researchers
