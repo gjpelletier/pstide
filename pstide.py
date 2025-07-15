@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.3"
+__version__ = "2.1.4"
 
 
 #----------------------------------------------------------------------------
@@ -189,8 +189,8 @@ if __name__ == "__main__":
 # Reference: Jean Meeus, _Astronomical Algorithms_, second edition,
 # 1998, Willmann-Bell, Inc.
 #------------------------------------------------------------------------------ 
-from math import *
-from time import gmtime
+# from math import *
+# from time import gmtime
 
 # Calendar Constants (modify for your purposes)
 standard_timezone_name = 'PST'
