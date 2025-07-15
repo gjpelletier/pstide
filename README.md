@@ -26,7 +26,7 @@ topography is referenced to NGVD29 or NAVD88 and bathymetry is referenced to
 MLLW, it became obvious that an accurate tide model for Puget Sound was needed to model
 the vertical datum differences. Hal dusted off the old Fortran code and
 refactored it to handle the full suite of constituents used to make official
-NOAA predictions (37 in all). It was as a GIS analyst that I became aware of
+NOAA predictions (37 in all). It was as a GIS analyst that David Finlayson became aware of
 the model. See Mofjeld et al. (2002) for details:
 
 Mofjeld, H. O., A. J. Venturato, et al. (2002). Tidal datum distributions in
