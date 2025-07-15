@@ -1,4 +1,4 @@
-# Puget Sound Tide Channel Model
+# Puget Sound Tide Channel Model for Python 3.x
 
 Adapted from original Python program pstide by David Finlayson
 
