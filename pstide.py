@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.1"
+__version__ = "2.1.2"
 
 
 #----------------------------------------------------------------------------
@@ -38,7 +38,8 @@ import sys
 import os
 import pickle
 from argparse import ArgumentParser
-from calendar import jd_to_cal, cal_to_jd, jd_to_ISO, lt_to_ut, ut_to_lt, now, hms_to_fday, fday_to_hms
+# from calendar import jd_to_cal, cal_to_jd, jd_to_ISO, lt_to_ut, ut_to_lt, now, hms_to_fday, fday_to_hms
+from pstide import jd_to_cal, cal_to_jd, jd_to_ISO, lt_to_ut, ut_to_lt, now, hms_to_fday, fday_to_hms
 from time import ctime
 from tidefun import predict_tides
 
