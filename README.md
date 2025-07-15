@@ -11,12 +11,14 @@ Lavelle, J. W., H. O. Mofjeld, et al. (1988). A multiply-connected channel
   with updated observations. Seattle, WA, Pacific Marine Environmental
   Laboratory: 103.
 
-Since that time, Hal Mofjeld (Oceanographer, PMEL) has maintained the code and updated
+Hal Mofjeld (Oceanographer, PMEL) maintained the code and updated
 it as languages and hardware have progressed; occasionally helping researchers
 to accurate tide predictions in the Sound in water bodies where the official
 NOAA predictions are unavailable or too distant to be accurate. (NOAA only
 predicts tides at three primary stations in the Sound and publishes offsets for
 other locations.)
+
+David Finlayson translated the code to Python 2.x in 2004
 
 In the late 1990's the increasing use of GIS in mapping lead to
 attempts to merge bathymetry and topographic digital elevation models. Because
