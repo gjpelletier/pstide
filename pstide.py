@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.4"
-
+__version__ = "2.1.5"
 
 #----------------------------------------------------------------------------
 #  ps_tide.py - Tide prediction Software for Puget Sound                    
@@ -620,5 +619,304 @@ if __name__ == '__main__':
     (hour, minute, second) = fday_to_hms(day)
     print(jd_to_ISO(jd, "UTC", "second"))
       
+#----------------------------------------------------------------------------
+#  tidefun.py - Tide prediction functions for Puget Sound                    
+#                                                                           
+#  David Finlayson                                                          
+#  Jun 10, 2004                                                             
+#  Version 1.1.1
+# 
+#----------------------------------------------------------------------------
+
+#  These algorythms were ported from Fortran code given me by H. Mofjeld.
+#  They represent the tidal portion of the Puget Sound Tide Channel Model.
+#  See README.txt for more information
+
+#  References
+#  ----------
+#
+#  Lavelle, J. W., H. O. Mofjeld, et al. (1988). A multiply-connected
+#  channel model of tides and tidal currents in Puget Sound,
+#  Washington and a comparison with updated observations. Seattle, WA,
+#  Pacific Marine Environmental Laboratory: 103.
+#
+#  Mofjeld, H. O. and L. H. Larsen (1984). Tides and tidal currents of
+#  the inland waters of western Washington. Seattle, Washington,
+#  Pacific Marine Environmental Laboratory: 51.
+from calendar import hms_to_fday, cal_to_jd
+from math import cos, sin, tan, acos, asin, atan, sqrt
+
+def predict_tides(hcs, jd, step_mins, series_days):
+    " predict tides using 37 harmonic constituents "
+    #--------------------------------------------------------------------
+    #  Input:
+    #  ------
+    #    hcs         - harmonic dictionary*
+    #    jd          - julian date (UTC)
+    #    step_mins   - predicion interval in minutes (float)
+    #    series_days - length of record in days (float)
+    #
+    #    * the hcs dictionary is built by the program compile_hcs.py
+    #
+    #  Output:
+    #  -------
+    #    JD   - Julian Date (float)
+    #    tide - tide elevation (meters)
+    #
+    #  The predictions begin at the specified starting date and time
+    #  (UTC) and are made for a specified number of days (series_days)
+    #  at the specified interval (step_mins); they are returned in a
+    #  two columns touple (julian day, tide level meters).
+    #
+    #  Modified from tides_2001.f by H. Mofjeld (2004 March 04)
+    #  Modified from predict_tides.f by D. Finlayson (2004 May 22)
+    #------------------------------------------------------------------
+    
+    #  Parameters
+    NC = 37   # Number of Harmonic Constituents (Full Set)
+    NH = 5    # Number of Harmonic Constituents (Model)
+
+    rad = 0.017453292519943 # degrees to radians
+    tnode = 30.5            # monthly interval to update lunar nodes
+    jd2000 = 2451544.50     # julian day of the year 2000
+    index = 0
+    constit = ('SA','SSA','MM','MSF','MF','2Q1','Q1','RHO','O1','M1','P1','S1',
+               'K1','J1','OO1','2N2','MU2','N2','NU2','M2','LAM2','L2','T2','S2',
+               'R2','K2','2SM2','2MK3','M3','MK3','MN4','M4','MS4','S4','M6','S6',
+               'M8')
+
+    mean = hcs['mean']
+
+    H = []  # Harmonic Amplitude (m)
+    G = []  # Phase Lag (deg)
+    for const in constit:
+        H.append(hcs[const][0])
+        G.append(hcs[const][1])
+
+    #  Converting phase lags to radians
+    for i in range(0, NC):
+        G[i] = rad * G[i]
+
+    # Tidal Predictions
+
+    #  Initial time parameters
+    JD0 = jd
+    step_days = step_mins / (24.0 * 60.0)
+    series_length = int(series_days / step_days)
+    nodeint  = tnode / step_days
+
+    #  Loop over time
+    prediction = [None] * series_length
+    for j in range(0, series_length):
+        JD = JD0 + step_days * j
+
+       # Nudge time a hair so that day fractions convert to times cleanly
+        JD = JD + 1.0e-9 
+        d2000 = JD - jd2000
+        tide = mean
+
+        #  Computing V0 phases, updated each time step
+        V0 = v2000(d2000)
+
+        #  Updating f-factors, u-phases every 30.5 days, centered in the
+        #  middle of the 30.5-day interval
+
+        # Python: first iteration is 0 not 1, so changed test to 0, not 1
+        if(j % nodeint == 0):
+            (f, u) = node2000(d2000 + 15.25)
+
+        #  Loop over tidal constituents
+        for i in range(0, NC):
+            r=f[i]*H[i]
+            phase=V0[i]+u[i]-G[i]
+            tide=tide+r*cos(phase)
+
+        #  Outputing prediction at time t
+        prediction[j] = (JD, tide)
+    return(prediction)
+
+def v2000(d2000):
+    "  Computing V0 phases Reference: Schureman, 1976 "
+    NC = 37
+    rad = 0.017453292519943
+    V = [None] * NC
+    V0 = [None] * NC
+
+    dphase = 360.0 * (d2000 % 1.0)
+
+    for i in range(0, 5):
+        V0[i] = 0.0
+
+    for i in range(5, 15):
+        V0[i] = 1.0 * dphase
+
+    for i in range(15, 27):
+        V0[i] = 2.0 * dphase
+
+    for i in range(27, 30):
+        V0[i] = 3.0 * dphase
+
+    for i in range(30, 34):
+        V0[i] = 4.0 * dphase
+
+    V0[34] = 6.0 * dphase
+    V0[35] = 6.0 * dphase
+    V0[36] = 8.0 * dphase
+
+    T  = (d2000 + 36524.5)/36525
+    s  = (270.437  + 481267.892 * T + 0.0025*T**2) % 360.0
+    h  = (279.697  +  36000.769 * T + 0.0003*T**2) % 360.0
+    p  = (334.328  +   4069.040 * T - 0.0103*T**2) % 360.0
+    p1 = (281.221  +      1.719 * T + 0.0005*T**2) % 360.0
+
+    V[0]  =    1.0 * h                                # SA
+    V[1]  =    2.0 * h                                # SSA
+    V[2]  =    1.0 * s + 0.0 * h - 1.0 * p            # MM
+    V[3]  =    2.0 * s + 0.0 * h - 2.0 * p            # MSF
+    V[4]  =    2.0 * s + 0.0 * h + 0.0 * p            # MF
+    V[5]  =  - 4.0 * s + 1.0 * h + 2.0 * p - 90.0     # QQ
+    V[6]  =  - 3.0 * s + 1.0 * h + 1.0 * p - 90.0     # Q1
+    V[7]  =  - 3.0 * s + 3.0 * h - 1.0 * p - 90.0     # RHO
+    V[8]  =  - 2.0 * s + 1.0 * h + 0.0 * p - 90.0     # O1
+    V[9]  =  - 1.0 * s + 1.0 * h + 0.0 * p - 90.0     # M1
+    V[10] =  - 0.0 * s - 1.0 * h + 0.0 * p - 90.0     # P1
+    V[11] =    180.0                                  # S1
+    V[12] =  - 0.0 * s + 1.0 * h + 0.0 * p + 90.0     # K1
+    V[13] =    1.0 * s + 1.0 * h - 1.0 * p + 90.0     # J1
+    V[14] =    2.0 * s + 1.0 * h + 0.0 * p + 90.0     # OO
+    V[15] =  - 4.0 * s + 2.0 * h + 2.0 * p            # NN
+    V[16] =  - 4.0 * s + 4.0 * h + 0.0 * p            # MU
+    V[17] =  - 3.0 * s + 2.0 * h + 1.0 * p            # N2
+    V[18] =  - 3.0 * s + 4.0 * h - 1.0 * p            # NU
+    V[19] =  - 2.0 * s + 2.0 * h + 0.0 * p            # M2
+    V[20] =  - 1.0 * s + 0.0 * h + 1.0 * p + 180.0    # LAM
+    V[21] =  - 1.0 * s + 2.0 * h - 1.0 * p + 180.0    # L2
+    V[22] =  - 0.0 * s - 1.0 * h + 1.0 * p1           # T2
+    V[23] =    0.0                                    # S2
+    V[24] =  - 0.0 * s + 1.0 * h - 1.0 * p1 + 180.0   # R2
+    V[25] =  - 0.0 * s + 2.0 * h + 0.0 * p1           # K2
+    V[26] =    2.0 * s - 2.0 * h + 0.0 * p            # 2MS2
+    V[27] =  - 4.0 * s + 3.0 * h + 0.0 * p - 90.0     # 2MK3
+    V[28] =  - 3.0 * s + 3.0 * h + 0.0 * p +180.0     # M3
+    V[29] =  - 2.0 * s + 3.0 * h + 0.0 * p + 90.0     # MK3
+    V[30] =  - 5.0 * s + 4.0 * h + 1.0 * p            # MN4
+    V[31] =  - 4.0 * s + 4.0 * h + 0.0 * p            # M4
+    V[32] =  - 2.0 * s + 2.0 * h + 0.0 * p            # MS4
+    V[33] =    0.0                                    # S4
+    V[34] =  - 6.0 * s + 6.0 * h + 0.0 * p            # M6
+    V[35] =    0.0                                    # S6
+    V[36] =  - 8.0 * s + 8.0 * h + 0.0 * p            # M8
+
+    for i in range(0, NC):
+        V0[i] = rad * (V0[i] + V[i])
+    return(V0)
+
+def node2000(d2000):
+    "  Computing node factors f and phases u Ref.: Schureman Tables "
+    rad = 0.017453292519943
+    NC = 37
+
+    T   = ( d2000 + 36524.5 )/36525.0
+    N   = (259.183 - 1934.142 * T + 0.0021 * T * T) % 360.0
+    if(N < 0.0): N = N + 360.0
+
+    N = rad*N
+    p  = (334.328 + 4069.040 * T - 0.0103*T**2) % 360.0
+    p = rad * p
+
+    I   = acos(0.9136949 - 0.035696 * cos(N))
+    nu  = asin(0.0897056 * sin(N)/sin(I))
+    eta = atan(cos(I) * tan(nu))
+    nup = atan((sin(nu) * sin(2.0 * I))/(cos(nu)*sin(2.0*I) + 0.3347))
+    nupp2 = atan((sin(2.0*nu) * sin(I)**2)/(cos(2.0*nu)*sin(I)**2 + 0.0727))
+    PP = p - eta
+
+    f = [None] * NC
+    f[0] = 1.000                                                        # SA
+    f[1] = 1.000                                                        # SSA
+    f[2] = (2.0/3.0-sin(I)**2)/0.5021                                   # MM
+    f[3] = cos(I/2.0)**4/0.9154                                         # MSF
+    f[4] = sin(I)**2/0.1578                                             # MF
+    f[5] = sin(I)*cos(I/2.0)**2/0.37988                                 # QQ
+    f[6] = sin(I)*cos(I/2.0)**2/0.37988                                 # Q1
+    f[7] = sin(I)*cos(I/2.0)**2/0.37988                                 # RHO1
+    f[8] = sin(I)*cos(I/2.0)**2/0.37988                                 # O1
+    Qai = sqrt(0.25 + 1.5 * cos(I) * cos(2.0 * PP)/cos(I/2.0)**2 + \
+               2.25 * cos(I)**2/cos(I/2.0)**4)
+    f[9] = f[8] * Qai                                                   # M1
+    f[10] = 1.000                                                       # P1
+    f[11] = 1.000                                                       # S1
+    f[12] = sqrt(0.8965 * sin(2.0 * I)**2 + 0.6001 * sin(2.0 * I) * \
+                 cos(nu) + 0.1006)                                      # K1
+    f[13] = sin(2.0 * I)/0.72137                                        # J1
+    f[14] = sin(I)*sin(I/2.0)**2/0.016358                               # OO
+    f[15] = cos(I/2.0)**4/0.9154                                        # NN
+    f[16] = cos(I/2.0)**4/0.9154                                        # MU2
+    f[17] = cos(I/2.0)**4/0.9154                                        # N2
+    f[18] = cos(I/2.0)**4/0.9154                                        # NU2
+    f[19] = cos(I/2.0)**4/0.9154                                        # M2
+    f[20] = cos(I/2.0)**4/0.9154                                        # LAM
+    Rai = sqrt(1.0 - 12.0*tan(I/2.0)**2 * cos(2.0*PP) + 36.0 * \
+               tan(I/2.0)**4)
+    f[21] = f[19] * Rai                                                 # L2
+    f[22] = 1.000                                                       # T2
+    f[23] = 1.000                                                       # S2
+    f[24] = 1.000                                                       # R2
+    f[25] = sqrt( 19.0444*sin(I)**4 + 2.7702*cos(2.0*nu)* \
+                  sin(I)**2 + 0.0981)                                   # K2
+    f[26] = cos(I/2.0)**4/0.9154                                        # 2SM2
+    f[27] = f[19]**2*f[12]                                              # 2MK3
+    f[28] = cos(I/2.0)**6/0.8758                                        # M3
+    f[29] = f[19]*f[12]                                                 # MK3
+    f[30] = f[19]**2                                                    # MN4
+    f[31] = f[19]**2                                                    # M4
+    f[32] = f[19]**2                                                    # MS4
+    f[33] = 1.000                                                       # S4
+    f[34] = f[19]**3                                                    # M6
+    f[35] = 1.000                                                       # S6
+    f[36] = f[19]**4                                                    # M8
+
+    u = [None] * NC
+    u[0] =  0.0                     # SA
+    u[1] =  0.0                     # SSA
+    u[2] =  0.0                     # MM
+    u[3] =  0.0                     # MSF
+    u[4] = -2.0*eta                 # MF
+    u[5] =  2.0*eta - nu            # QQ
+    u[6] =  2.0*eta - nu            # Q1
+    u[7] =  2.0*eta - nu            # RHO
+    u[8] =  2.0*eta - nu            # O1
+    Q = atan( 0.483*tan(PP))
+    u[9] =  1.0*eta - nu + Q        # M1
+    u[10] = 0.0                     # P1
+    u[11] = 0.0                     # S1
+    u[12] = -nup                    # K1
+    u[13] = -nu                     # J1
+    u[14] = -2.0*eta - nu           # OO
+    u[15] =  2.0*eta - 2.0*nu       # NN
+    u[16] =  2.0*eta - 2.0*nu       # MU2
+    u[17] =  2.0*eta - 2.0*nu       # N2
+    u[18] =  2.0*eta - 2.0*nu       # NU2
+    u[19] =  2.0*eta - 2.0*nu       # M2
+    u[20] =  2.0*eta - 2.0*nu       # LAM
+    R = atan( sin(2.0*PP)/( 1.0/( 6.0*tan(I/2.0)**2 ) - cos(2.0*PP) ) )
+    u[21] =  2.0*eta - 2.0*nu - R   # L2
+    u[22] =  0.0                    # T2
+    u[23] =  0.0                    # S2
+    u[24] =  0.0                    # R2
+    u[25] = -nupp2                  # K2
+    u[26] = -2.0*eta + 2.0*nu       # 2SM2
+    u[27] = 4.0*eta - 4.0*nu + nup  # 2MK3
+    u[28] = 3.0*eta - 3.0*nu        # M3
+    u[29] = 2.0*eta - 2.0*nu - nup  # MK3
+    u[30] = 4.0*eta - 4.0*nu        # MN4
+    u[31] = 4.0*eta - 4.0*nu        # M4
+    u[32] = 2.0*eta - 2.0*nu        # MS4
+    u[33] = 0.0                     # S4
+    u[34] = 6.0*eta - 6.0*nu        # M6
+    u[35] = 0.0                     # S6
+    u[36] = 8.0*eta - 8.0*nu        # M8
+    return(f, u)
+
 
       
