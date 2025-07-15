@@ -13,7 +13,7 @@ Lavelle, J. W., H. O. Mofjeld, et al. (1988). A multiply-connected channel
 
 David Finlayson translated the Lavelle and Mofjeld's Fortran code to Python 2.x in 2004, and included the following paragraphs in a readme file:
 
-'''
+```
 Hal Mofjeld (Oceanographer, PMEL) maintained the code and updated
 it as languages and hardware have progressed; occasionally helping researchers
 to accurate tide predictions in the Sound in water bodies where the official
@@ -33,7 +33,7 @@ the model. See Mofjeld et al. (2002) for details:
 Mofjeld, H. O., A. J. Venturato, et al. (2002). Tidal datum distributions in
   Puget Sound, Washington, based on a tide model. Seattle, WA, NOAA/Pacific
   Marine Environmental Laboratory: 39.
-'''
+```
 
 
 
