@@ -9,7 +9,7 @@ setup(
     author='Greg Pelletier',
     py_modules=['pstide'], 
     install_requires=[
-        'numpy','pandas','math','time'
+        'numpy','pandas'
     ],
 )
 
