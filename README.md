@@ -1,5 +1,4 @@
-# pstide
-Puget Sound Tide Channel Model
+# Puget Sound Tide Channel Model
 
 If you have not already installed pstide, enter the following with pip or !pip in your notebook or terminal:<br>
 ```
