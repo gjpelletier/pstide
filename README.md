@@ -9,7 +9,7 @@ The Puget Sound Tide Channel Model (PSTCM) was first published in the late 1980'
 Lavelle, J. W., H. O. Mofjeld, et al. (1988). A multiply-connected channel
   model of tides and tidal currents in Puget Sound, Washington and a comparison
   with updated observations. Seattle, WA, Pacific Marine Environmental
-  Laboratory: 103.
+  Laboratory: 103pp. NOAA Technical Memorandum ERL PMEL-84
 
 David Finlayson translated the Lavelle and Mofjeld's Fortran code to Python 2.x in 2004, and included the following paragraphs in a readme file:
 
