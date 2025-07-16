@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.14"
+__version__ = "2.1.15"
 
 #----------------------------------------------------------------------------
 #  ps_tide.py - Tide prediction Software for Puget Sound                    
@@ -169,7 +169,7 @@ def run_pstide(**kwargs):
     import os
     import pickle
     from pstide import cal_to_jd, hms_to_fday, lt_to_ut, predict_tides
-    from argparse import ArgumentParser
+    from pstide import print_title, print_tide
     from datetime import datetime
     import pandas as pd
     
@@ -244,9 +244,9 @@ def run_pstide(**kwargs):
     if options['verbose']:
         print(df.to_string(index=False))
     
-    # if fout is not sys.stdout:
-    #     fout.close()
-    fout.close()
+    if fout is not sys.stdout:
+        # print('closing fout')
+        fout.close()
     
     result = {
         'options': options,
