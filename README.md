@@ -58,7 +58,7 @@ result = run_pstide(**kwargs)
 
 The code above returns the following output on screen and in the output pstide_output.csv and pstide_output.png:
 
-(also note that the 'result' from the above is a dictionary that includes the following keys: 'options': input options, 'segdata': segment data for selected segment, 'ps_segments': dictionary of contents of ps_segments.dat, and 'df_tide': Pandas dataframe of the tide predictions):
+(also note that the 'result' above is a dictionary that includes the following keys: 'options': input options, 'segdata': segment data for selected segment, 'ps_segments': dictionary of contents of ps_segments.dat, and 'df_tide': Pandas dataframe of the tide predictions):
 
 ```
 Puget Sound Tide Model: Tide Predictions
