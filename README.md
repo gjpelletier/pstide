@@ -57,7 +57,7 @@ https://github.com/gjpelletier/pstide/blob/main/ps_segments.dat
 
 This example assumes you have already followed the instructions above for installing pstide and copying the ps_segments.dat file to your working directory.
 
-Running the following code in your Jupyter Notebook:
+Run the following code in your Jupyter Notebook:
 ```
 from pstide import run_pstide
 
@@ -76,7 +76,7 @@ kwargs = {
 result = run_pstide(**kwargs)
 ```
 
-Returns the following output on screen and in the output pstide_output.csv and pstide_output.png:
+The code above returns the following output on screen and in the output pstide_output.csv and pstide_output.png:
 
 ```
 Puget Sound Tide Model: Tide Predictions
