@@ -48,6 +48,7 @@ pip install git+https://github.com/gjpelletier/pstide.git --upgrade
 
 # Example
 
+Running the following code in your Jupyter Notebook
 ```
 # Example use of run_pstide
 from pstide import run_pstide
@@ -69,7 +70,9 @@ kwargs = {
     
 tides = run_pstide(**kwargs)
 ```
-"""
+
+Returns the following output
+```
              Datetime Height
 2025-Jul-15 17:25 PDT   1.31
 2025-Jul-15 18:25 PDT   2.10
@@ -95,8 +98,7 @@ tides = run_pstide(**kwargs)
 2025-Jul-16 14:25 PDT   0.75
 2025-Jul-16 15:25 PDT   0.60
 2025-Jul-16 16:25 PDT   0.75
-"""
-
+```
 
 # Map of Puget Sound
 
