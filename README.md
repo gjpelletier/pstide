@@ -4,7 +4,7 @@ Adapted from the pstide.py module for Python 2.x by David Finlayson
 
 Modified to run in Python 3.x by Greg Pelletier
 
-The Puget Sound Tide Channel Model (PSTCM) was first published in the late 1980's:
+The Puget Sound Tide Channel Model was first published in the late 1980's:
 
 [Lavelle, J. W., H. O. Mofjeld, et al. (1988)](https://github.com/gjpelletier/pstide/blob/main/Lavelle_et_al_1988.pdf). A multiply-connected channel
   model of tides and tidal currents in Puget Sound, Washington and a comparison
