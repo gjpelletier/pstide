@@ -71,7 +71,7 @@ kwargs = {
 tides = run_pstide(**kwargs)
 ```
 
-Returns the following output on screen:
+Returns the following output on screen and in the output pstide_output.csv:
 
 ```
 Puget Sound Tide Model: Tide Predictions
