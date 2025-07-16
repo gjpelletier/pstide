@@ -1,6 +1,6 @@
 # Puget Sound Tide Channel Model for Python 3.x
 
-Adapted from the Python 2.x pstide module by David Finlayson
+Adapted from the pstide.py module for Python 2.x by David Finlayson
 
 Modified to run in Python 3.x by Greg Pelletier
 
