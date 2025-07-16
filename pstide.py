@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.19"
+__version__ = "2.1.20"
 
 #----------------------------------------------------------------------------
 #  ps_tide.py - Tide prediction Software for Puget Sound                    
@@ -211,8 +211,8 @@ def run_pstide(**kwargs):
     # Update input options arguments with any provided keyword arguments in kwargs
     options = {**defaults, **kwargs}
  
-    if type(options[segment]) is int:
-        options[segment] = str(options[segment])
+    if type(options['segment']) is int:
+        options['segment'] = str(options['segment'])
  
     # print a warning for unexpected input kwargs
     unexpected = kwargs.keys() - defaults.keys()
