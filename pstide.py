@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.5"
+__version__ = "2.1.8"
 
 #----------------------------------------------------------------------------
 #  ps_tide.py - Tide prediction Software for Puget Sound                    
@@ -12,9 +12,8 @@ __version__ = "2.1.5"
 #                                                      
 #  Updated to Python 3.x by 
 #  Greg Pelletier
-#  With advice from Copilot
-#  Jul 14 2025
-#  Version 2.1.1      
+#  Jul 15 2025
+#     
 #----------------------------------------------------------------------------
 
 #  WARNING: this code is only to be used for research purposes; not
@@ -67,6 +66,7 @@ def is_valid_date(datetext):
 
 # ----------------------------- Argument Parsing -----------------------------
 def parse_arguments():
+    from argparse import ArgumentParser
     parser = ArgumentParser(description="Puget Sound Tide Channel Model Predictor")
     parser.add_argument("segment", type=str, help="Segment index (1–589, some gaps)")
     parser.add_argument("-s", "--start", type=str, default="today", help="Start time: 'YYYY-MM-DD HH:MM' (default=today UTC)")
@@ -88,52 +88,198 @@ def get_output_stream(outfile):
 
 # ----------------------------- Title Printing -----------------------------
 def print_title(fout, segment, segdata, datetext, options):
+    '''
+    add title and header to output file
+    '''
+    from time import ctime
     name = segdata['name']
     refstation = segdata['refstation']
     lon, lat = segdata['longitude'], segdata['latitude']
     mean = segdata['hcs']['mean']
-    tzname = "Local" if options.pacific else "JD" if options.julian else "UTC"
-    delim = options.delimiter
+    tzname = "Local" if options['pacific'] else "JD" if options['julian'] else "UTC"
+    delim = options['delimiter']
 
     fout.write(f"Puget Sound Tide Model: Tides\n")
     fout.write(f"Segment Index: {segment} ({name})\n")
     fout.write(f"Longitude: {lon:.6f}  Latitude: {lat:.6f}\n")
     fout.write(f"Minor constituents inferred from {refstation}\n")
     fout.write(f"Starting time: {datetext}\n")
-    fout.write(f"Time step: {options.interval:.2f} min  Length: {options.length:.2f} days\n")
-    fout.write(f"Mean water level: {mean * (3.2808 if options.feet else 1):.2f} {'ft' if options.feet else 'm'}\n\n")
+    fout.write(f"Time step: {options['interval']:.2f} min  Length: {options['length']:.2f} days\n")
+    fout.write(f"Mean water level: {mean * (3.2808 if options['feet'] else 1):.2f} {'ft' if options['feet'] else 'm'}\n\n")
     fout.write(f"Predictions generated: {ctime()} (System)\n")
-    fout.write(f"Heights in {'feet' if options.feet else 'meters'} above MLLW\n")
+    fout.write(f"Heights in {'feet' if options['feet'] else 'meters'} above MLLW\n")
 
     if tzname == "UTC":
         fout.write(f"Prediction date and time in Universal Time (UTC)\n")
-        fout.write(f"\nDate        Time  TZ{delim}Height\n")
+        fout.write(f"\nDatetime{delim}Height\n")
     elif tzname == "Local":
         fout.write(f"Prediction date and time in Pacific Time (PST or PDT)\n")
-        fout.write(f"\nDate        Time  TZ{delim}Height\n")
+        fout.write(f"\nDatetime{delim}Height\n")
     else:
         fout.write("Prediction date and time in Julian Days (JD)\n")
         fout.write(f"\nDay{delim}Height\n")
 
 # ----------------------------- Tide Printing -----------------------------
-def print_tide_entry(fout, tide, options):
+def print_tide(fout, tide, options, df):
+    '''
+    append row of tide predictions to output file and df
+    '''
+    from pstide import ut_to_lt, jd_to_ISO, jd_to_cal, fday_to_hms
     jd = tide[0]
     height = tide[1]
-    delim = options.delimiter
-    height_str = f"{height * (3.2808 if options.feet else 1):.1f}" if options.feet else f"{height:.2f}"
+    delim = options['delimiter']
+    height_str = f"{height * (3.2808 if options['feet'] else 1):.1f}" if options['feet'] else f"{height:.2f}"
 
-    if options.pacific:
+    if options['pacific']:
         jd_local, zone = ut_to_lt(jd)
         datetext = jd_to_ISO(jd_local, zone, "minute")
-    elif options.julian:
+    elif options['julian']:
         datetext = f"{jd:12.4f}"
     else:
         year, month, fday = jd_to_cal(jd)
         hour, minute, _ = fday_to_hms(fday)
         datetext = f"{year:04d}-{month:02d}-{int(fday):02d} {hour:02d}:{minute:02d} UTC"
 
+    # append row to output file
     fout.write(f"{datetext}{delim}{height_str}\n")
 
+    # append row to df
+    df.loc[len(df)] = [datetext, height_str]
+
+def run_pstide(**kwargs):
+    '''
+    Puget Sound Tide Channel Model for Python 3.x
+    
+    Adapted from the Python 2.x pstide module by David Finlayson
+    
+    Modified to run in Python 3.x by Greg Pelletier
+    
+    The Puget Sound Tide Channel Model (PSTCM) was first published in the late 1980's:
+    
+    Lavelle, J. W., H. O. Mofjeld, et al. (1988). A multiply-connected channel
+      model of tides and tidal currents in Puget Sound, Washington and a comparison
+      with updated observations. Seattle, WA, Pacific Marine Environmental
+      Laboratory: 103pp. NOAA Technical Memorandum ERL PMEL-84
+
+    Args.
+        'segment': Segment number as text '1' through '589' (default '497')
+        'start': Starting datetime as ISO text string (default datetime.now().isoformat()), 
+        'length': Length of tide time series days (default 1.0),
+        'interval': Time interval of tide time series minutes (default 60),
+        'pacific': Use Pacific time zone instead of UTC (default True),
+        'title': Inlcude title and header info in output file (default True), 
+        'outfile': Name of output file to save (default 'pstide_output.csv'), 
+        'delimiter': Delimiter to use for output file (default ','), 
+        'julian': Use Julian date format for outpout (default False),
+        'feet': Use feet instead of meters for units of tide height (default False),
+        'verbose': Print the predicted tides on screen (default True)
+
+    Returns.
+        df: Pandas dataframe of tide predictions
+        
+    '''
+    
+    import sys
+    import os
+    import pickle
+    from pstide import cal_to_jd, hms_to_fday, lt_to_ut, predict_tides
+    from argparse import ArgumentParser
+    from datetime import datetime
+    import pandas as pd
+    
+    # Define default values of input data arguments
+    defaults = {
+        'segment': '497', 
+        'start': datetime.now().isoformat(), 
+        'length': 1.0,
+        'interval': 60,
+        'pacific': True,
+        'title': True, 
+        'outfile': 'pstide_output.csv', 
+        'delimiter': ',', 
+        'julian': False,
+        'feet': False,
+        'verbose': True
+        }
+    
+    # Update input options arguments with any provided keyword arguments in kwargs
+    options = {**defaults, **kwargs}
+    
+    # print a warning for unexpected input kwargs
+    unexpected = kwargs.keys() - defaults.keys()
+    if unexpected:
+        # raise ValueError(f"Unexpected argument(s): {unexpected}")
+        print(f"Unexpected input kwargs: {unexpected}")
+
+    # check for ps_segments.dat and load it into data dictionary
+    file_name = "ps_segments.dat"
+    ctrl = os.path.exists(file_name)
+    if not ctrl:
+        cwd = os.getcwd()
+        print(f'Download {file_name} from https://github.com/gjpelletier/pstide and copy to your working directory {cwd}','\n')
+        sys.exit()
+    with open(file_name, 'rb') as fin:
+        data = pickle.load(fin)
+
+    # initialize output file
+    try:
+        fout = open(options['outfile'], 'w', encoding='utf-8') if options['outfile'] else sys.stdout
+    except IOError:
+        cwd = os.getcwd()
+        print(f'Unable to write output file {options['outfile']} in your working directory {cwd}')
+        sys.exit(1)
+
+    # Parse the ISO string into a datetime object
+    iso_string = options['start']
+    dt = datetime.fromisoformat(iso_string)
+    year = dt.year
+    month = dt.month
+    day = dt.day
+    hour = dt.hour
+    minute = dt.minute
+    second = 0
+
+    jd = cal_to_jd(year, month, day + hms_to_fday(hour, minute, second))
+    jd_utc = lt_to_ut(jd) if options['pacific'] else jd
+
+    segdata = data[options['segment']]
+
+    tideseries = predict_tides(segdata['hcs'], jd_utc, options['interval'], options['length'])
+
+    # Print results to the output stream
+    if options['title'] == True:
+        print_title(fout, options['segment'], segdata, options['start'], options)
+       
+    df = pd.DataFrame(columns=['Datetime', 'Height'])
+    # df.style.set_properties(**{'text-align': 'left'})
+    for tide in tideseries:
+        print_tide(fout, tide, options, df)
+
+    if options['verbose']:
+        print(df.to_string(index=False))
+    
+    # if fout is not sys.stdout:
+    #     fout.close()
+    fout.close()
+    
+    result = {
+        'options': options,
+        'data': data,
+        'year': year,
+        'month': month,
+        'day': day,
+        'hour': hour,
+        'minute': minute,
+        'second': second,
+        'jd': jd,
+        'jd_utc': jd_utc,
+        'segdata': segdata,
+        'tideseries': tideseries
+    }
+    
+    return df
+
+'''
 # ----------------------------- Main Execution -----------------------------
 def main():
     args = parse_arguments()
@@ -177,7 +323,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
+'''    
     
 #------------------------------------------------------------------------------
 # calendar.py - A library of calendar functions
@@ -643,7 +789,7 @@ if __name__ == '__main__':
 #  Mofjeld, H. O. and L. H. Larsen (1984). Tides and tidal currents of
 #  the inland waters of western Washington. Seattle, Washington,
 #  Pacific Marine Environmental Laboratory: 51.
-from calendar import hms_to_fday, cal_to_jd
+# from calendar import hms_to_fday, cal_to_jd
 from math import cos, sin, tan, acos, asin, atan, sqrt
 
 def predict_tides(hcs, jd, step_mins, series_days):
