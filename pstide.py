@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.20"
+__version__ = "2.1.21"
 
 #----------------------------------------------------------------------------
 #  ps_tide.py - Tide prediction Software for Puget Sound                    
@@ -181,6 +181,7 @@ def run_pstide(**kwargs):
         dictionary of the following:
             options: input options
             segdata: segment data for selected  segment
+            ps_segments: dictionary of contents of ps_segments.data
             df_tide: Pandas dataframe of tide predictions
         
     '''
@@ -192,6 +193,7 @@ def run_pstide(**kwargs):
     from pstide import print_title, print_tide
     from datetime import datetime
     import pandas as pd
+    import matplotlib.pyplot as plt
     
     # Define default values of input data arguments
     defaults = {
@@ -205,7 +207,8 @@ def run_pstide(**kwargs):
         'delimiter': ',', 
         'julian': False,
         'feet': False,
-        'verbose': True
+        'verbose': True,
+        'show_plot': False
         }
     
     # Update input options arguments with any provided keyword arguments in kwargs
@@ -273,14 +276,30 @@ def run_pstide(**kwargs):
     if options['outfile']:
         # print('closing fout')
         fout.close()
-        del fout
-    
+
+    # optional plot of tide time series
+    if options['show_plot']:
+        title_str = 'Tide Height at ' + segdata['name']
+        if options['feet']:
+            ylabel_str = 'Tide Height (feet MLLW)'
+        else:
+            ylabel_str = 'Tide Height (meters MLLW)'            
+        plt.figure(figsize=(10, 6))
+        plt.plot(df['Datetime'], df['Height'], label='Tide')
+        plt.title(title_str, fontsize=16)
+        plt.xlabel('Date', fontsize=12)
+        plt.ylabel(ylabel_str, fontsize=12)
+        plt.grid(True)
+        plt.legend()
+        plt.show()
+
     result = {
         'options': options,
         'segdata': segdata,
+        'ps_segments': data,
         'df_tide': df
     }
-    
+        
     return result
 
 '''
