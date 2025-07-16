@@ -53,7 +53,9 @@ Before using pstide for the first time, you must download the [ps_segments.dat](
 
 https://github.com/gjpelletier/pstide/blob/main/ps_segments.dat
 
-# Example
+# Example use of pstide
+
+This example assumes you have already followed the instructions above for installing pstide and copying the ps_segments.dat file to your working directory.
 
 Running the following code in your Jupyter Notebook:
 ```
