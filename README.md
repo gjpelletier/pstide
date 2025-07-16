@@ -47,7 +47,7 @@ if you are upgrading from a previous installation of PyMLR, enter the following 
 pip install git+https://github.com/gjpelletier/pstide.git --upgrade
 ```
 
-# ps_segments.dat
+# Before first using pstide
 
 Before using pstide for the first time, you must download the [ps_segments.dat](https://github.com/gjpelletier/pstide/blob/main/ps_segments.dat) file from the following link and copy it into your working directory:
 
