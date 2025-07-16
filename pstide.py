@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.29"
+__version__ = "2.1.30"
 
 #----------------------------------------------------------------------------
 #  pstide.py - Tide prediction Software for Puget Sound                    
@@ -31,6 +31,311 @@ __version__ = "2.1.29"
 #  Mofjeld, H. O. and L. H. Larsen (1984). Tides and tidal currents of
 #  the inland waters of western Washington. Seattle, Washington,
 #  Pacific Marine Environmental Laboratory: 51.
+
+#----------------------------------------------------------------------------
+#
+# Contents of the original README file distributed with version 1.1.1
+# are included below as requested by David Finlayson in that distribution.
+# Note that many of the README instructions are specific to version 1.1.1
+# and are not applicable to the current version that is 
+# modified by Greg Pelletier to run in Python 3.x. The updated version retains
+# nearly all of the functionality of the original version, and also adds
+# functionality with modern python libraries (e.g. pandas and matplotlib)
+#
+#----------------------------------------------------------------------------
+'''
+START OF README.txt
+
+This is pstide.py version 1.1.1
+================================
+
+Copyright (c) 2004 David Finlayson
+Some rights reserved.
+
+License information
+-------------------
+
+WARNING: This software is not to be used for Navigation. Official tide tables
+for Puget Sound can be obtained from the National Ocean Service
+(see www.nos.noaa.gov).
+
+You are free to use, copy, modify or otherwise incorporate this software into your own
+research/project provided that this README is included, that you properly
+credit Lavelle et al. (1988), H. O. Mofjeld and David Finlayson for our work,
+and that your changes are clearly indicated in the History section of this document.
+
+History
+-------
+
+The Puget Sound Tide Channel Model (PSTCM) was first published in the late 1980's:
+
+Lavelle, J. W., H. O. Mofjeld, et al. (1988). A multiply-connected channel
+  model of tides and tidal currents in Puget Sound, Washington and a comparison
+  with updated observations. Seattle, WA, Pacific Marine Environmental
+  Laboratory: 103.
+
+Since that time, Hal Mofjeld (Oceanographer, PMEL) has maintained the code and updated
+it as languages and hardware have progressed; occasionally helping researchers
+to accurate tide predictions in the Sound in water bodies where the official
+NOAA predictions are unavailable or too distant to be accurate. (NOAA only
+predicts tides at three primary stations in the Sound and publishes offsets for
+other locations.)
+
+In the late 1990's the increasing use of GIS in mapping lead to
+attempts to merge bathymetry and topographic digital elevation models. Because
+topography is referenced to NGVD29 or NAVD88 and bathymetry is referenced to
+MLLW, it became obvious that an accurate tide model for Puget Sound was needed to model
+the vertical datum differences. Hal dusted off the old Fortran code and
+refactored it to handle the full suite of constituents used to make official
+NOAA predictions (37 in all). It was as a GIS analyst that I became aware of
+the model. See Mofjeld et al. (2002) for details:
+
+Mofjeld, H. O., A. J. Venturato, et al. (2002). Tidal datum distributions in
+  Puget Sound, Washington, based on a tide model. Seattle, WA, NOAA/Pacific
+  Marine Environmental Laboratory: 39.
+
+In 2004 my PhD research lead me to need accurate tide predictions for virtually
+every bay and water body in Puget Sound. NOAA only makes tide predictions at
+Seattle and Port Townsend and relies on time and water level offsets to predict
+tides at other locations. While it is possible to interpolate tide curves for
+stations where only offsets are published, assumptions about how to interpolate
+the offsets become significant (for an interesting discussion of this see the
+source code comments in XTide on this point). I wanted to do better than this.
+So once again, Hal dusted off the old PSTCM.
+
+The PSTCM interpolates the tidal constituents directly not the water elevations,
+this means that more information is available to the program about how tidal
+curves will look. Originally, only the first 6 harmonic constituents (hcs) were
+interpolated. Although most of the missing constituents are relatively minor,
+for completeness Hal modified the code to infer the missing constituents from a
+suitable primary reference station. The end result is a very accurate tide
+prediction that reproduces the NOAA prediction at Seattle and Port Townsend and
+is significantly more accurate than using offsets at other locations in Puget
+Sound.
+
+pstide.py, is my contribution. This script simplifies the tide prediction
+process by creating a standard CLI interface to the tide prediction algorithm.
+Now that the code is in Python, it is easy to extend (which I would encourage
+someone to do). This script merely reads in the constituents from harmonic
+files and provides the code for generating the time series. It is not the PSTCM
+itself.
+
+To report bugs, suggest features or get more information please contact me.
+
+David Finlayson
+Marine Geology & Geophysics
+School of Oceanography
+University of Washington
+dfinlays@u.washington.edu
+206 616-9407
+
+Version History
+---------------
+Version 1.1.1 - (2004 Nov 08) Corrected a few typos in the output strings and updated
+                 this readme file.
+
+Version 1.1.0 - (2004 May 22) Added option for Pacific Time. When selected input time
+                is assumed to be in Pacific Time and output times will be in Pacific Time
+                (switch between daylight and standard time is handled automatically).
+                Added option to output time in Julian day format.
+                Added option to output water levels in feet.
+
+Version 1.0.1 - (2004 May 21) Changed output date and time to ISO Format
+                Rounded all predictions to centimeters
+                Dropped the index field from output
+
+Version 1.0.0 - (2004 May 15) Released functional version of tide
+                prediction program
+
+
+Program Requirements
+--------------------
+
+This program is a collection of Python scripts. You will need to install
+Python before the software will run. Python is freely available from the Python
+web site (http://www.python.org). I have only tested the scripts under Python
+version 2.3. It may or may not work on older installations.
+
+Although it is not required, the Psyco extension for the Python interpreter is
+recommended (http://psyco.sourceforge.net). If installed, pstide will execute about
+three times faster. (Still only half the speed of the original Fortran code,
+but oh, so much friendlier!)
+
+Program Installation
+--------------------
+
+step 1: Download and extract the program files
+
+Download pstide.zip and extract the pstide directory. You should find the following
+directory structure:
+
+pstide
+    calendar.py
+    compile_hcs.py
+    pstide.py
+    ps_segments.dat
+    README.txt
+    tidefun.py
+    todays_tide.bat
+ 
++---images
+        hood_canal.jpg
+        main_basin.jpg
+        north_sound.jpg
+        south_sound_east.jpg
+        south_sound_west.jpg
+ 
++---segment_data
+        k1ascii.dat
+        m2ascii.dat
+        m4ascii.dat
+        n2ascii.dat
+        o1ascii.dat
+        port_townsend.hcs
+        s2ascii.dat
+        seattle.hcs
+        segment_locations.dat
+
+step 2: Compile the harmonic constituents to binary form
+
+From the pstide directory, run the script: compile_hcs.py
+
+> python compile_hcs.py
+Puget Sound Tide Channel Model
+Compiling Harmonic Constituent Data...Please be patient.
+Complete!
+
+step 3: Make a tide prediction
+
+From the pstide directory, run the script pstide.py using a segment for Elliott Bay
+(497) and starting on today's date (the default):
+
+> python pstide.py 497
+2004-11-08 00:00 UTC     2.71
+2004-11-08 01:00 UTC     2.22
+2004-11-08 02:00 UTC     1.77
+2004-11-08 03:00 UTC     1.47
+2004-11-08 04:00 UTC     1.37
+2004-11-08 05:00 UTC     1.47
+2004-11-08 06:00 UTC     1.72
+... (and so on)
+
+Note that on Windows, the command can be shortened to:
+
+> pstide 497
+
+PS Tide has a help screen that lists all of the current options:
+
+> python pstide.py -h
+usage: pstide.py [options] segment
+
+Predict tide elevations using the Puget Sound Tide Channel Model
+
+arguments:
+    segment         Model segment (integer between 1 and 589)
+
+options:
+  --version             show program's version number and exit
+  -h, --help            show this help message and exit
+  -sSTART, --start=START
+                        Starting date for predictions in ISO format (quoted):
+                        'YYYY-MM-DD HH:MM'. Date and time should be in
+                        UTC unless -p switch is specified as an option. In
+                        that case, time should be in Pacific Time.
+                        Daylight savings adjustments are handled
+                        automatically. (default=Today's Date UTC)
+  -t, --title           print title before prediction (default=FALSE)
+  -oFILE, --outfile=FILE
+                        write prediction to FILE (default=stdout)
+  -iMINS, --interval=MINS
+                        set the time step interval in minutes (default=60.0)
+  -lDAYS, --length=DAYS
+                        set the time series length in days (default=1.0)
+  -dDELIM, --deliminator=DELIM
+                        set the column deliminator character (default='\t')
+  -p, --pacific         prediction times in Pacific Time Zone (PST or PDT)
+                        default=FALSE)
+  -j, --julian          prediction times in Julian Days (default=False)
+  -f, --feet            prediction heights in Feet (default=False)
+
+
+Detailed Explanation
+---------------------
+
+The basic argument to pstide is a segment number, everything else is optional.
+
+The segment number corresponds to the channel cross-sections illustrated as
+JPEG files in the pstide/images directory. I would like to make this step more
+convenient in the future, but today you are forced to load up the maps in an
+image viewer and pan around to find the cross-section nearest to your area of
+interest. There are more than 500 and the model does a good job of getting into
+most of the larger bays and estuaries in Puget Sound. Odds are, that the model
+has a cross-section exactly where you need it.
+
+Options:
+
+By default, predictions are made for today's date in UTC (Universal Coordinated Time).
+The starting date can be changed by entering a new date as a quoted string in
+ISO format like this: "YYYY-MM-DD HH:MM". YYYY is the 4-digit year, MM is
+the 2 digit month, DD is the 2 digit day, HH is the 2-digit hour and MM is the
+2-digit minute. The date you enter is assumed to be in Universal Time (UTC)
+unless the -p option is given (see below).
+
+Predictions are made on the hour for 1 day. Both the interval (-i) and length
+(-l) of the prediction can be changed with option switches. Predictions times
+are output in UTC unless the -p or -j options are given. Prediction water
+levels are output in meters (to the nearest centimeter) unless the -f option is
+given, in which case the prediction is in feet and tenths (1m = 1.2808 ft).
+
+The -p switch activates Pacific Time mode. With the -p switch, the starting
+time is assumed to be in either Pacific Standard Time (PST) or Pacific Daylight
+Time (PDT), whichever is appropriate for the given date and time. The output
+date and time are also in Pacific Time.
+
+The -j switch outputs dates in the Julian Day number format. The Julian Day number is
+a continuous count of days and fractions from the beginning of the year -4712.
+A Julian day begins at Greenwich mean noon, hence, it is 12 hours (0.5 days)
+off the civil tradition of starting a day at midnight. Julian days are nice for plotting
+tide levels against time, since the date becomes a monotonically increasing
+integer.
+
+The -t switch adds a human readable title to the output including the segment location
+and other metadata about the prediction.
+
+The -o switch followed by a filename will cause pstide.py to store the output in a file
+rather than outputting to a text file. On windows, the same thing can be achieved by
+redirecting the output like this: 
+
+> pstide 497 "2002-01-01 00:00" > output.txt
+
+MAKE LIFE EASY WITH A BATCH FILE
+
+On Windows or Linux (possibly a Mac, but I wouldn't know) a good way to use
+pstide is to write a short batch file (or shell script) that launches pstide
+with your favorite options already specified. You can even load the output
+automatically into MS Excel for further analysis or plotting. 
+
+I have included a batch file that works for Windows called "todays_tide.bat".
+Modify that file in notepad.exe to suite your computer and then running pstide
+will be as simple as double-clicking the batch file icon in explorer (or a
+short-cut on your desktop).
+
+FUTURE WORK
+
+Someday it would be nice to wrap this program in a nice GUI that would make it easy to
+select a channel segment and display the output using nice graphics. That will have to
+wait until I graduate or some kind programmer donates their energy.
+
+David Finlayson
+November 8, 2004
+
+END OF README.txt
+'''
+#----------------------------------------------------------------------------
+#
+# End of README.txt
+#
+#----------------------------------------------------------------------------
 
 import sys
 import os
