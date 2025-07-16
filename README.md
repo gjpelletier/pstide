@@ -69,6 +69,7 @@ kwargs = {
     
 tides = run_pstide(**kwargs)
 ```
+"""
              Datetime Height
 2025-Jul-15 17:25 PDT   1.31
 2025-Jul-15 18:25 PDT   2.10
@@ -94,7 +95,7 @@ tides = run_pstide(**kwargs)
 2025-Jul-16 14:25 PDT   0.75
 2025-Jul-16 15:25 PDT   0.60
 2025-Jul-16 16:25 PDT   0.75
-
+"""
 
 
 # Map of Puget Sound
