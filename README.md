@@ -50,13 +50,11 @@ pip install git+https://github.com/gjpelletier/pstide.git --upgrade
 
 Running the following code in your Jupyter Notebook:
 ```
-# Example use of run_pstide
 from pstide import run_pstide
-from datetime import datetime
 
 kwargs = {
     'segment': '497', 
-    'start': datetime.now().isoformat(), 
+    'start': '2025-07-15T15:00:00', 
     'length': 1.0,
     'interval': 60,
     'pacific': True,
@@ -79,39 +77,39 @@ Puget Sound Tide Model: Tide Predictions
 Segment Index: 497 (Elliott_Bay)
 Longitude: -122.347915  Latitude: 47.591075
 Minor constituents inferred from seattle.hcs
-Starting time: 2025-07-15T19:39:30.242855
+Starting time: 2025-07-15T15:00:00
 Time step: 60.00 min  Length: 1.00 days
 Mean water level: 2.02 m
 
-Predictions generated: Tue Jul 15 19:39:30 2025 (System)
+Predictions generated: Tue Jul 15 20:33:44 2025 (System)
 Heights in meters above MLLW
 Prediction date and time in Pacific Time (PST or PDT)
 
              Datetime Height
-2025-Jul-15 19:39 PDT   3.00
-2025-Jul-15 20:39 PDT   3.48
-2025-Jul-15 21:39 PDT   3.65
-2025-Jul-15 22:39 PDT   3.49
-2025-Jul-15 23:39 PDT   3.05
-2025-Jul-16 00:39 PDT   2.46
-2025-Jul-16 01:39 PDT   1.86
-2025-Jul-16 02:39 PDT   1.40
-2025-Jul-16 03:39 PDT   1.18
-2025-Jul-16 04:39 PDT   1.22
-2025-Jul-16 05:39 PDT   1.49
-2025-Jul-16 06:39 PDT   1.90
-2025-Jul-16 07:39 PDT   2.31
-2025-Jul-16 08:39 PDT   2.58
-2025-Jul-16 09:39 PDT   2.64
-2025-Jul-16 10:39 PDT   2.45
-2025-Jul-16 11:39 PDT   2.05
-2025-Jul-16 12:39 PDT   1.53
-2025-Jul-16 13:39 PDT   1.03
-2025-Jul-16 14:39 PDT   0.69
-2025-Jul-16 15:39 PDT   0.61
-2025-Jul-16 16:39 PDT   0.83
-2025-Jul-16 17:39 PDT   1.32
-2025-Jul-16 18:39 PDT   1.97
+2025-Jul-15 15:00 PDT   0.15
+2025-Jul-15 16:00 PDT   0.43
+2025-Jul-15 17:00 PDT   1.00
+2025-Jul-15 18:00 PDT   1.76
+2025-Jul-15 19:00 PDT   2.55
+2025-Jul-15 20:00 PDT   3.20
+2025-Jul-15 21:00 PDT   3.58
+2025-Jul-15 22:00 PDT   3.63
+2025-Jul-15 23:00 PDT   3.36
+2025-Jul-16 00:00 PDT   2.86
+2025-Jul-16 01:00 PDT   2.24
+2025-Jul-16 02:00 PDT   1.68
+2025-Jul-16 03:00 PDT   1.29
+2025-Jul-16 04:00 PDT   1.16
+2025-Jul-16 05:00 PDT   1.29
+2025-Jul-16 06:00 PDT   1.63
+2025-Jul-16 07:00 PDT   2.05
+2025-Jul-16 08:00 PDT   2.42
+2025-Jul-16 09:00 PDT   2.63
+2025-Jul-16 10:00 PDT   2.60
+2025-Jul-16 11:00 PDT   2.33
+2025-Jul-16 12:00 PDT   1.87
+2025-Jul-16 13:00 PDT   1.35
+2025-Jul-16 14:00 PDT   0.89
 ```
 
 # Map of Puget Sound
