@@ -37,7 +37,7 @@ https://github.com/gjpelletier/pstide/blob/main/ps_segments.dat
 
 This example assumes you have already followed the instructions above for installing pstide and copying the ps_segments.dat file to your working directory.
 
-Copy and run the following code in your Jupyter Notebook:
+Copy/paste and run the following code in your Jupyter Notebook:
 ```
 from pstide import run_pstide
 
