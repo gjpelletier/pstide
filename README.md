@@ -135,7 +135,7 @@ run_pstide(**kwargs)
     Returns.
         dictionary of the following:
             options: input options
-            segdata: segment data for selected  segment
+            segdata: segment data for selected segment
             ps_segments: dictionary of contents of ps_segments.data
             df_tide: Pandas dataframe of tide predictions
 ```
