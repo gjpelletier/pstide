@@ -72,21 +72,22 @@ tides = run_pstide(**kwargs)
 ```
 
 Returns the following output on screen:
+
+```
 Puget Sound Tide Model: Tide Predictions
 
-> Segment Index: 497 (Elliott_Bay)
-> Longitude: -122.347915  Latitude: 47.591075
-> Minor constituents inferred from seattle.hcs
-> Starting time: 2025-07-15T19:17:32.899031
-> Time step: 60.00 min  Length: 1.00 days
-> Mean water level: 2.02 m
-> 
-> Predictions generated: Tue Jul 15 19:17:33 2025 (System)
-> Heights in meters above MLLW
-> Prediction date and time in Pacific Time (PST or PDT)
-> 
-> Date        Time  TZ,Height
-```
+Segment Index: 497 (Elliott_Bay)
+Longitude: -122.347915  Latitude: 47.591075
+Minor constituents inferred from seattle.hcs
+Starting time: 2025-07-15T19:17:32.899031
+Time step: 60.00 min  Length: 1.00 days
+Mean water level: 2.02 m
+
+Predictions generated: Tue Jul 15 19:17:33 2025 (System)
+Heights in meters above MLLW
+Prediction date and time in Pacific Time (PST or PDT)
+
+Date        Time  TZ,Height
              Datetime Height
 2025-Jul-15 19:17 PDT   2.75
 2025-Jul-15 20:17 PDT   3.34
