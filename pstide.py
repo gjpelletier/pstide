@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.32"
+__version__ = "2.1.33"
 
 #----------------------------------------------------------------------------
 #  pstide.py - Tide prediction Software for Puget Sound                    
@@ -484,7 +484,7 @@ def run_pstide(**kwargs):
         dictionary of the following:
             options: input options
             segdata: segment data for selected segment
-            ps_segments: dictionary of contents of ps_segments.data
+            ps_segments: dictionary of contents of ps_segments.dat
             df_tide: Pandas dataframe of tide predictions
         
     '''
