@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.30"
+__version__ = "2.1.31"
 
 #----------------------------------------------------------------------------
 #  pstide.py - Tide prediction Software for Puget Sound                    
@@ -34,7 +34,7 @@ __version__ = "2.1.30"
 
 #----------------------------------------------------------------------------
 #
-# Contents of the original README file distributed with version 1.1.1
+# Contents of the original README.txt file distributed with version 1.1.1
 # are included below as requested by David Finlayson in that distribution.
 # Note that many of the README instructions are specific to version 1.1.1
 # and are not applicable to the current version that is 
@@ -331,11 +331,6 @@ November 8, 2004
 
 END OF README.txt
 '''
-#----------------------------------------------------------------------------
-#
-# End of README.txt
-#
-#----------------------------------------------------------------------------
 
 import sys
 import os
