@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.25"
+__version__ = "2.1.26"
 
 #----------------------------------------------------------------------------
 #  ps_tide.py - Tide prediction Software for Puget Sound                    
@@ -293,6 +293,8 @@ def run_pstide(**kwargs):
             ylabel_str = 'Tide Height (meters MLLW)'            
         if options['pacific']:
             xlabel_str = 'Date (US/Pacific PST or PDT)'
+        elif options['julian']:
+            xlabel_str = 'Julian Days (JD)'
         else:
             xlabel_str = 'Date (UTC)'            
         plt.figure(figsize=(10, 6))
