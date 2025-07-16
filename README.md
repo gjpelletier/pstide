@@ -46,6 +46,12 @@ if you are upgrading from a previous installation of PyMLR, enter the following 
 pip install git+https://github.com/gjpelletier/pstide.git --upgrade
 ```
 
+# ps_segments.dat
+
+Download the [ps_segments.data](https://github.com/gjpelletier/pstide/blob/main/ps_segments.dat) file from the following link and put it into your working directory before using pstide:
+
+https://github.com/gjpelletier/pstide/blob/main/ps_segments.dat
+
 # Example
 
 Running the following code in your Jupyter Notebook:
