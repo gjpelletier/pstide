@@ -11,6 +11,10 @@ The Puget Sound Tide Channel Model was first published in the late 1980's:
   with updated observations. Seattle, WA, Pacific Marine Environmental
   Laboratory: 103pp. NOAA Technical Memorandum ERL PMEL-84
 
+# Disclaimor
+
+WARNING: This code is only to be used for research purposes; not for navigation. The official tidal predictions of the United States are available from NOAA/NOS (www.co-ops.nos.noaa.gov)
+
 # Installing pstide
 
 If you have not already installed pstide in your Python environment, enter the following with pip or !pip in your notebook or terminal:<br>
