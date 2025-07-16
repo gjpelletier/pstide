@@ -96,6 +96,50 @@ Prediction date and time in Pacific Time (PST or PDT)
 ```
 <img width="2624" height="1654" alt="pstide_output" src="https://github.com/user-attachments/assets/0d35e0d9-4b68-44bc-8bb1-f806c8baa1bd" />
 
+# User instructions
+
+Running help(run_pstide) in your notebook provides the following user instructions, including a list of the optional keyword arguments, and the contents of the output result dictionary:
+
+```
+Help on function run_pstide in module pstide:
+
+run_pstide(**kwargs)
+    Puget Sound Tide Channel Model for Python 3.x
+
+    Adapted from the Python 2.x pstide module by David Finlayson
+
+    Modified to run in Python 3.x by Greg Pelletier
+
+    The Puget Sound Tide Channel Model (PSTCM) was first published in the late 1980's:
+
+    Lavelle, J. W., H. O. Mofjeld, et al. (1988). A multiply-connected channel
+      model of tides and tidal currents in Puget Sound, Washington and a comparison
+      with updated observations. Seattle, WA, Pacific Marine Environmental
+      Laboratory: 103pp. NOAA Technical Memorandum ERL PMEL-84
+
+    Args.
+        'segment': Segment number as text '1' through '589' (default '497')
+        'start': Starting datetime as ISO text string (default datetime.now().isoformat()),
+        'length': Length of tide time series days (default 1.0),
+        'interval': Time interval of tide time series minutes (default 60),
+        'pacific': Use Pacific time zone instead of UTC (default True),
+        'title': Inlcude title and header info in output text file (default True),
+        'outfile': Name of output text file to save (default 'pstide_output.csv'),
+        'plotfile': Name of output plot file to save (default 'pstide_output.png'),
+        'delimiter': Delimiter to use for output file (default ','),
+        'julian': Use Julian date format for outpout (default False),
+        'feet': Use feet instead of meters for units of tide height (default False),
+        'verbose': Print the predicted tides on screen (default True)
+        'show_plot': Make a plot of the tide height time series (default False)
+
+    Returns.
+        dictionary of the following:
+            options: input options
+            segdata: segment data for selected  segment
+            ps_segments: dictionary of contents of ps_segments.data
+            df_tide: Pandas dataframe of tide predictions
+```
+
 # Maps of Puget Sound and segment numbers
 
 <img width="659" height="851" alt="Fig1_Map_of_Puget_Sound" src="https://github.com/user-attachments/assets/ff6f9d4d-5d91-4cdb-a951-9b0dbe4e6df3" />
