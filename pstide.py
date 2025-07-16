@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.22"
+__version__ = "2.1.24"
 
 #----------------------------------------------------------------------------
 #  ps_tide.py - Tide prediction Software for Puget Sound                    
@@ -236,7 +236,7 @@ def run_pstide(**kwargs):
     keys_list = list(data.keys())
     ctrl = options['segment'] in keys_list
     if not ctrl:
-        print(f'Program stopped: Segment {options['segment']} is not a valid number between 1 and 589.')
+        print(f'ERROR: Segment {options['segment']} is not a valid segment number between 1 and 589.')
         sys.exit()
 
     # initialize output file
@@ -290,12 +290,16 @@ def run_pstide(**kwargs):
             ylabel_str = 'Tide Height (feet MLLW)'
         else:
             ylabel_str = 'Tide Height (meters MLLW)'            
+        if options['pacific']:
+            xlabel_str = 'Date (US/Pacific PST or PDT)'
+        else:
+            xlabel_str = 'Date (UTC)'            
         plt.figure(figsize=(10, 6))
         plt.plot(df['Datetime'], df['Height'], label='Tide')
         plt.title(title_str, fontsize=16)
-        plt.xlabel('Date', fontsize=12)
+        plt.xlabel(xlabel_str, fontsize=12)
         plt.ylabel(ylabel_str, fontsize=12)
-        plt.grid(True)
+        # plt.grid(True)
         plt.legend()
         plt.show()
 
