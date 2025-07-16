@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.15"
+__version__ = "2.1.16"
 
 #----------------------------------------------------------------------------
 #  ps_tide.py - Tide prediction Software for Puget Sound                    
@@ -64,25 +64,27 @@ def print_title(fout, segment, segdata, datetext, options):
     tzname = "Local" if options['pacific'] else "JD" if options['julian'] else "UTC"
     delim = options['delimiter']
 
-    fout.write(f"Puget Sound Tide Model: Tide Predictions\n")
-    fout.write(f"Segment Index: {segment} ({name})\n")
-    fout.write(f"Longitude: {lon:.6f}  Latitude: {lat:.6f}\n")
-    fout.write(f"Minor constituents inferred from {refstation}\n")
-    fout.write(f"Starting time: {datetext}\n")
-    fout.write(f"Time step: {options['interval']:.2f} min  Length: {options['length']:.2f} days\n")
-    fout.write(f"Mean water level: {mean * (3.2808 if options['feet'] else 1):.2f} {'ft' if options['feet'] else 'm'}\n\n")
-    fout.write(f"Predictions generated: {ctime()} (System)\n")
-    fout.write(f"Heights in {'feet' if options['feet'] else 'meters'} above MLLW\n")
+    if options['outfile']:
 
-    if tzname == "UTC":
-        fout.write(f"Prediction date and time in Universal Time (UTC)\n")
-        fout.write(f"\nDatetime{delim}Height\n")
-    elif tzname == "Local":
-        fout.write(f"Prediction date and time in Pacific Time (PST or PDT)\n")
-        fout.write(f"\nDatetime{delim}Height\n")
-    else:
-        fout.write("Prediction date and time in Julian Days (JD)\n")
-        fout.write(f"\nDay{delim}Height\n")
+        fout.write(f"Puget Sound Tide Model: Tide Predictions\n")
+        fout.write(f"Segment Index: {segment} ({name})\n")
+        fout.write(f"Longitude: {lon:.6f}  Latitude: {lat:.6f}\n")
+        fout.write(f"Minor constituents inferred from {refstation}\n")
+        fout.write(f"Starting time: {datetext}\n")
+        fout.write(f"Time step: {options['interval']:.2f} min  Length: {options['length']:.2f} days\n")
+        fout.write(f"Mean water level: {mean * (3.2808 if options['feet'] else 1):.2f} {'ft' if options['feet'] else 'm'}\n\n")
+        fout.write(f"Predictions generated: {ctime()} (System)\n")
+        fout.write(f"Heights in {'feet' if options['feet'] else 'meters'} above MLLW\n")
+
+        if tzname == "UTC":
+            fout.write(f"Prediction date and time in Universal Time (UTC)\n")
+            fout.write(f"\nDatetime{delim}Height\n")
+        elif tzname == "Local":
+            fout.write(f"Prediction date and time in Pacific Time (PST or PDT)\n")
+            fout.write(f"\nDatetime{delim}Height\n")
+        else:
+            fout.write("Prediction date and time in Julian Days (JD)\n")
+            fout.write(f"\nDay{delim}Height\n")
 
     if options['verbose']:
 
@@ -105,16 +107,20 @@ def print_title(fout, segment, segdata, datetext, options):
         else:
             print("Prediction date and time in Julian Days (JD)\n")
             # print(f"\nDay{delim}Height\n")
+
 # ----------------------------- Tide Printing -----------------------------
 def print_tide(fout, tide, options, df):
     '''
     append row of tide predictions to output file and df
     '''
     from pstide import ut_to_lt, jd_to_ISO, jd_to_cal, fday_to_hms
+    from datetime import datetime
+    import pytz
+
     jd = tide[0]
     height = tide[1]
     delim = options['delimiter']
-    height_str = f"{height * (3.2808 if options['feet'] else 1):.1f}" if options['feet'] else f"{height:.2f}"
+    height_str = f"{height * (3.2808 if options['feet'] else 1):.2f}" if options['feet'] else f"{height:.3f}"
 
     if options['pacific']:
         jd_local, zone = ut_to_lt(jd)
@@ -126,13 +132,21 @@ def print_tide(fout, tide, options, df):
         hour, minute, _ = fday_to_hms(fday)
         datetext = f"{year:04d}-{month:02d}-{int(fday):02d} {hour:02d}:{minute:02d} UTC"
 
-    # append row to output file
-    fout.write(f"{datetext}{delim}{height_str}\n")
+    # append row to output csv
+    if options['outfile']:
+        # append row to output file
+        fout.write(f"{datetext}{delim}{height_str}\n")
 
     # append row to df
-    df.loc[len(df)] = [datetext, height_str]
+    dt = datetime.strptime(datetext, '%Y-%b-%d %H:%M %Z')
+    if options['pacific']
+        timezone = pytz.timezone('US/Pacific')
+    else
+        timezone = pytz.timezone('UTC')
+    localized_dt = timezone.localize(dt)
+    df.loc[len(df)] = [localized_dt, float(height_str)]
 
-def run_pstide(**kwargs):
+def predict_tide(**kwargs):
     '''
     Puget Sound Tide Channel Model for Python 3.x
     
@@ -209,7 +223,9 @@ def run_pstide(**kwargs):
 
     # initialize output file
     try:
-        fout = open(options['outfile'], 'w', encoding='utf-8') if options['outfile'] else sys.stdout
+        # fout = open(options['outfile'], 'w', encoding='utf-8') if options['outfile'] else sys.stdout
+        if options['outfile']:
+            fout = open(options['outfile'], 'w', encoding='utf-8')            
     except IOError:
         cwd = os.getcwd()
         print(f'Unable to write output file {options['outfile']} in your working directory {cwd}')
@@ -244,7 +260,8 @@ def run_pstide(**kwargs):
     if options['verbose']:
         print(df.to_string(index=False))
     
-    if fout is not sys.stdout:
+    # if fout is not sys.stdout:
+    if options['outfile']:
         # print('closing fout')
         fout.close()
     
