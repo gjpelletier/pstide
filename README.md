@@ -18,7 +18,7 @@ If you have not already installed pstide in your Python environment, enter the f
 pip install git+https://github.com/gjpelletier/pstide.git
 ```
 
-if you are upgrading from a previous installation, enter the following:<br>
+If you are upgrading from a previous installation, enter the following:<br>
 ```
 pip install git+https://github.com/gjpelletier/pstide.git --upgrade
 ```
