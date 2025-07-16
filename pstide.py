@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.21"
+__version__ = "2.1.22"
 
 #----------------------------------------------------------------------------
 #  ps_tide.py - Tide prediction Software for Puget Sound                    
@@ -213,10 +213,7 @@ def run_pstide(**kwargs):
     
     # Update input options arguments with any provided keyword arguments in kwargs
     options = {**defaults, **kwargs}
- 
-    if type(options['segment']) is int:
-        options['segment'] = str(options['segment'])
- 
+  
     # print a warning for unexpected input kwargs
     unexpected = kwargs.keys() - defaults.keys()
     if unexpected:
@@ -232,6 +229,15 @@ def run_pstide(**kwargs):
         sys.exit()
     with open(file_name, 'rb') as fin:
         data = pickle.load(fin)
+
+    # convert segment to str and check that it is in the list of keys for ps_segments.dat
+    if type(options['segment']) is int:
+        options['segment'] = str(options['segment'])
+    keys_list = list(data.keys())
+    ctrl = options['segment'] in keys_list
+    if not ctrl:
+        print(f'Program stopped: Segment {options['segment']} is not a valid number between 1 and 589.')
+        sys.exit()
 
     # initialize output file
     try:
