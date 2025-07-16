@@ -37,7 +37,7 @@ Mofjeld, H. O., A. J. Venturato, et al. (2002). Tidal datum distributions in
 
 # Installing pstide
 
-If you have not already installed pstide, enter the following with pip or !pip in your notebook or terminal:<br>
+If you have not already installed pstide in your Python environment, enter the following with pip or !pip in your notebook or terminal:<br>
 ```
 pip install git+https://github.com/gjpelletier/pstide.git
 ```
