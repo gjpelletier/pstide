@@ -42,7 +42,7 @@ If you have not already installed pstide, enter the following with pip or !pip i
 pip install git+https://github.com/gjpelletier/pstide.git
 ```
 
-if you are upgrading from a previous installation of PyMLR, enter the following with pip pr !pip in your notebook or terminal:<br>
+if you are upgrading from a previous installation of PyMLR, enter the following:<br>
 ```
 pip install git+https://github.com/gjpelletier/pstide.git --upgrade
 ```
@@ -76,7 +76,7 @@ kwargs = {
 result = run_pstide(**kwargs)
 ```
 
-Returns the following output on screen and in the output pstide_output.csv:
+Returns the following output on screen and in the output pstide_output.csv and pstide_output.png:
 
 ```
 Puget Sound Tide Model: Tide Predictions
