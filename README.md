@@ -62,20 +62,18 @@ Running the following code in your Jupyter Notebook:
 from pstide import run_pstide
 
 kwargs = {
-    'segment': '497', 
-    'start': '2025-07-15T15:00:00', 
-    'length': 1.0,
-    'interval': 60,
-    'pacific': True,
-    'title': True, 
-    'outfile': 'pstide_output.csv', 
-    'delimiter': ',', 
-    'julian': False,
-    'feet': False,
-    'verbose': True
+    'segment': 497,                    # Puget Sound location segment number (1-589)
+    'start': '2025-07-16T12:00:00',    # start datetime in ISO format
+    'length': 1.0,                     # length of time to predict tides (days)
+    'interval': 60,                    # time interval between predictions (minutes)
+    'pacific': True,                   # use Pacific time (PDT/PST)
+    'verbose': True,                   # display results on screen
+    'show_plot': True,                 # plot the results
+    'outfile': 'pstide_output.csv',    # save results in csv
+    'plotfile': 'pstide_output.png',   # save plot as png
     }
     
-tides = run_pstide(**kwargs)
+result = run_pstide(**kwargs)
 ```
 
 Returns the following output on screen and in the output pstide_output.csv:
@@ -86,40 +84,41 @@ Puget Sound Tide Model: Tide Predictions
 Segment Index: 497 (Elliott_Bay)
 Longitude: -122.347915  Latitude: 47.591075
 Minor constituents inferred from seattle.hcs
-Starting time: 2025-07-15T15:00:00
+Starting time: 2025-07-16T12:00:00
 Time step: 60.00 min  Length: 1.00 days
 Mean water level: 2.02 m
 
-Predictions generated: Tue Jul 15 20:33:44 2025 (System)
+Predictions generated: Wed Jul 16 13:10:13 2025 (System)
 Heights in meters above MLLW
 Prediction date and time in Pacific Time (PST or PDT)
 
-             Datetime Height
-2025-Jul-15 15:00 PDT   0.15
-2025-Jul-15 16:00 PDT   0.43
-2025-Jul-15 17:00 PDT   1.00
-2025-Jul-15 18:00 PDT   1.76
-2025-Jul-15 19:00 PDT   2.55
-2025-Jul-15 20:00 PDT   3.20
-2025-Jul-15 21:00 PDT   3.58
-2025-Jul-15 22:00 PDT   3.63
-2025-Jul-15 23:00 PDT   3.36
-2025-Jul-16 00:00 PDT   2.86
-2025-Jul-16 01:00 PDT   2.24
-2025-Jul-16 02:00 PDT   1.68
-2025-Jul-16 03:00 PDT   1.29
-2025-Jul-16 04:00 PDT   1.16
-2025-Jul-16 05:00 PDT   1.29
-2025-Jul-16 06:00 PDT   1.63
-2025-Jul-16 07:00 PDT   2.05
-2025-Jul-16 08:00 PDT   2.42
-2025-Jul-16 09:00 PDT   2.63
-2025-Jul-16 10:00 PDT   2.60
-2025-Jul-16 11:00 PDT   2.33
-2025-Jul-16 12:00 PDT   1.87
-2025-Jul-16 13:00 PDT   1.35
-2025-Jul-16 14:00 PDT   0.89
+                 Datetime  Height
+2025-07-16 12:00:00-07:00   1.872
+2025-07-16 13:00:00-07:00   1.346
+2025-07-16 14:00:00-07:00   0.889
+2025-07-16 15:00:00-07:00   0.631
+2025-07-16 16:00:00-07:00   0.653
+2025-07-16 17:00:00-07:00   0.972
+2025-07-16 18:00:00-07:00   1.533
+2025-07-16 19:00:00-07:00   2.220
+2025-07-16 20:00:00-07:00   2.884
+2025-07-16 21:00:00-07:00   3.379
+2025-07-16 22:00:00-07:00   3.598
+2025-07-16 23:00:00-07:00   3.493
+2025-07-17 00:00:00-07:00   3.094
+2025-07-17 01:00:00-07:00   2.494
+2025-07-17 02:00:00-07:00   1.830
+2025-07-17 03:00:00-07:00   1.249
+2025-07-17 04:00:00-07:00   0.873
+2025-07-17 05:00:00-07:00   0.769
+2025-07-17 06:00:00-07:00   0.938
+2025-07-17 07:00:00-07:00   1.314
+2025-07-17 08:00:00-07:00   1.784
+2025-07-17 09:00:00-07:00   2.218
+2025-07-17 10:00:00-07:00   2.501
+2025-07-17 11:00:00-07:00   2.565
 ```
+<img width="2624" height="1654" alt="pstide_output" src="https://github.com/user-attachments/assets/0d35e0d9-4b68-44bc-8bb1-f806c8baa1bd" />
 
 # Maps of Puget Sound and segment numbers
 
