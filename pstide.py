@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.16"
+__version__ = "2.1.17"
 
 #----------------------------------------------------------------------------
 #  ps_tide.py - Tide prediction Software for Puget Sound                    
@@ -139,7 +139,7 @@ def print_tide(fout, tide, options, df):
 
     # append row to df
     dt = datetime.strptime(datetext, '%Y-%b-%d %H:%M %Z')
-    if options['pacific']
+    if options['pacific']:
         timezone = pytz.timezone('US/Pacific')
     else
         timezone = pytz.timezone('UTC')
