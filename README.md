@@ -11,30 +11,6 @@ The Puget Sound Tide Channel Model was first published in the late 1980's:
   with updated observations. Seattle, WA, Pacific Marine Environmental
   Laboratory: 103pp. NOAA Technical Memorandum ERL PMEL-84
 
-David Finlayson translated the Lavelle and Mofjeld's Fortran code to Python 2.x in 2004, and included the following paragraphs in a readme file:
-
-<blockquote>
-Hal Mofjeld (Oceanographer, PMEL) maintained the code and updated
-it as languages and hardware have progressed; occasionally helping researchers
-to accurate tide predictions in the Sound in water bodies where the official
-NOAA predictions are unavailable or too distant to be accurate. (NOAA only
-predicts tides at three primary stations in the Sound and publishes offsets for
-other locations.)
-
-In the late 1990's the increasing use of GIS in mapping lead to
-attempts to merge bathymetry and topographic digital elevation models. Because
-topography is referenced to NGVD29 or NAVD88 and bathymetry is referenced to
-MLLW, it became obvious that an accurate tide model for Puget Sound was needed to model
-the vertical datum differences. Hal dusted off the old Fortran code and
-refactored it to handle the full suite of constituents used to make official
-NOAA predictions (37 in all). It was as a GIS analyst that David Finlayson became aware of
-the model. See Mofjeld et al. (2002) for details:
-
-Mofjeld, H. O., A. J. Venturato, et al. (2002). Tidal datum distributions in
-  Puget Sound, Washington, based on a tide model. Seattle, WA, NOAA/Pacific
-  Marine Environmental Laboratory: 39.
-</blockquote>
-
 # Installing pstide
 
 If you have not already installed pstide in your Python environment, enter the following with pip or !pip in your notebook or terminal:<br>
