@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.24"
+__version__ = "2.1.25"
 
 #----------------------------------------------------------------------------
 #  ps_tide.py - Tide prediction Software for Puget Sound                    
@@ -138,13 +138,14 @@ def print_tide(fout, tide, options, df):
         fout.write(f"{datetext}{delim}{height_str}\n")
 
     # append row to df
-    dt = datetime.strptime(datetext, '%Y-%b-%d %H:%M %Z')
     if options['pacific']:
+        dt = datetime.strptime(datetext, '%Y-%b-%d %H:%M %Z')
         timezone = pytz.timezone('US/Pacific')
         localized_dt = timezone.localize(dt)
     elif options['julian']:
         localized_dt = float(datetext)
     else:
+        dt = datetime.strptime(datetext, '%Y-%m-%d %H:%M %Z')
         timezone = pytz.timezone('UTC')
         localized_dt = timezone.localize(dt)
     df.loc[len(df)] = [localized_dt, float(height_str)]
