@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.8"
+__version__ = "2.1.9"
 
 #----------------------------------------------------------------------------
 #  ps_tide.py - Tide prediction Software for Puget Sound                    
@@ -40,16 +40,6 @@ from time import ctime
 # from calendar import jd_to_cal, cal_to_jd, jd_to_ISO, lt_to_ut, ut_to_lt, now, hms_to_fday, fday_to_hms
 # from tidefun import predict_tides
 
-# ----------------------------- Error Messaging -----------------------------
-def print_error(message, value=None):
-    errors = {
-        'segment': f"Error: invalid segment '{value}'. Expected integer between 1 and 589.",
-        'date': f"Error: invalid date string '{value}'. Use format 'YYYY-MM-DD HH:MM'.",
-        'file': f"Error: cannot open output file: '{value}'.",
-        'segment_data': "Error: missing model data file 'ps_segments.dat'. Run compile_hcs.py first."
-    }
-    print("\n" + errors.get(message, "Unknown error."))
-
 # ----------------------------- Date Conversion -----------------------------
 def string_to_date(datetext):
     date, time = datetext[:17].split()
@@ -64,33 +54,8 @@ def is_valid_date(datetext):
     except Exception:
         return False
 
-# ----------------------------- Argument Parsing -----------------------------
-def parse_arguments():
-    from argparse import ArgumentParser
-    parser = ArgumentParser(description="Puget Sound Tide Channel Model Predictor")
-    parser.add_argument("segment", type=str, help="Segment index (1–589, some gaps)")
-    parser.add_argument("-s", "--start", type=str, default="today", help="Start time: 'YYYY-MM-DD HH:MM' (default=today UTC)")
-    parser.add_argument("-t", "--title", action="store_true", help="Include metadata title block")
-    parser.add_argument("-o", "--outfile", type=str, default="", help="Output file (default=stdout)")
-    parser.add_argument("-i", "--interval", type=float, default=60.0, help="Time step in minutes")
-    parser.add_argument("-l", "--length", type=float, default=1.0, help="Series length in days")
-    parser.add_argument("-d", "--delimiter", type=str, default="\t", help="Column delimiter (default='\\t')")
-    parser.add_argument("-p", "--pacific", action="store_true", help="Use Pacific Time Zone")
-    parser.add_argument("-j", "--julian", action="store_true", help="Output in Julian Days")
-    parser.add_argument("-f", "--feet", action="store_true", help="Output tide heights in feet")
-
-    args = parser.parse_args()
-    return args
-
-# ----------------------------- Output Handling -----------------------------
-def get_output_stream(outfile):
-    return open(outfile, 'w', encoding='utf-8') if outfile else sys.stdout
-
 # ----------------------------- Title Printing -----------------------------
 def print_title(fout, segment, segdata, datetext, options):
-    '''
-    add title and header to output file
-    '''
     from time import ctime
     name = segdata['name']
     refstation = segdata['refstation']
@@ -99,7 +64,7 @@ def print_title(fout, segment, segdata, datetext, options):
     tzname = "Local" if options['pacific'] else "JD" if options['julian'] else "UTC"
     delim = options['delimiter']
 
-    fout.write(f"Puget Sound Tide Model: Tides\n")
+    fout.write(f"Puget Sound Tide Model: Tide Predictions\n")
     fout.write(f"Segment Index: {segment} ({name})\n")
     fout.write(f"Longitude: {lon:.6f}  Latitude: {lat:.6f}\n")
     fout.write(f"Minor constituents inferred from {refstation}\n")
@@ -111,14 +76,35 @@ def print_title(fout, segment, segdata, datetext, options):
 
     if tzname == "UTC":
         fout.write(f"Prediction date and time in Universal Time (UTC)\n")
-        fout.write(f"\nDatetime{delim}Height\n")
+        fout.write(f"\nDate        Time  TZ{delim}Height\n")
     elif tzname == "Local":
         fout.write(f"Prediction date and time in Pacific Time (PST or PDT)\n")
-        fout.write(f"\nDatetime{delim}Height\n")
+        fout.write(f"\nDate        Time  TZ{delim}Height\n")
     else:
         fout.write("Prediction date and time in Julian Days (JD)\n")
         fout.write(f"\nDay{delim}Height\n")
 
+    if options['verbose']:
+
+        print(f"Puget Sound Tide Model: Tide Predictions\n")
+        print(f"Segment Index: {segment} ({name})")
+        print(f"Longitude: {lon:.6f}  Latitude: {lat:.6f}")
+        print(f"Minor constituents inferred from {refstation}")
+        print(f"Starting time: {datetext}")
+        print(f"Time step: {options['interval']:.2f} min  Length: {options['length']:.2f} days")
+        print(f"Mean water level: {mean * (3.2808 if options['feet'] else 1):.2f} {'ft' if options['feet'] else 'm'}\n")
+        print(f"Predictions generated: {ctime()} (System)")
+        print(f"Heights in {'feet' if options['feet'] else 'meters'} above MLLW")
+    
+        if tzname == "UTC":
+            print(f"Prediction date and time in Universal Time (UTC)")
+            print(f"\nDate        Time  TZ{delim}Height\n")
+        elif tzname == "Local":
+            print(f"Prediction date and time in Pacific Time (PST or PDT)")
+            print(f"\nDate        Time  TZ{delim}Height\n")
+        else:
+            print("Prediction date and time in Julian Days (JD)")
+            print(f"\nDay{delim}Height\n")
 # ----------------------------- Tide Printing -----------------------------
 def print_tide(fout, tide, options, df):
     '''
