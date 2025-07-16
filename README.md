@@ -112,7 +112,8 @@ Date        Time  TZ,Height
 2025-Jul-16 15:17 PDT   0.61
 2025-Jul-16 16:17 PDT   0.71
 2025-Jul-16 17:17 PDT   1.11
-2025-Jul-16 18:17 PDT   1.72```
+2025-Jul-16 18:17 PDT   1.72
+```
 
 # Map of Puget Sound
 
