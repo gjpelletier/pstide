@@ -48,7 +48,7 @@ pip install git+https://github.com/gjpelletier/pstide.git --upgrade
 
 # ps_segments.dat
 
-Download the [ps_segments.dat](https://github.com/gjpelletier/pstide/blob/main/ps_segments.dat) file from the following link and copy it into your working directory before using pstide:
+Before using pstide for the first time, you must first download the [ps_segments.dat](https://github.com/gjpelletier/pstide/blob/main/ps_segments.dat) file from the following link and copy it into your working directory:
 
 https://github.com/gjpelletier/pstide/blob/main/ps_segments.dat
 
