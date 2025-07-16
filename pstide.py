@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.9"
+__version__ = "2.1.10"
 
 #----------------------------------------------------------------------------
 #  ps_tide.py - Tide prediction Software for Puget Sound                    
@@ -98,10 +98,10 @@ def print_title(fout, segment, segdata, datetext, options):
     
         if tzname == "UTC":
             print(f"Prediction date and time in Universal Time (UTC)")
-            print(f"\nDate        Time  TZ{delim}Height\n")
+            print(f"\nDatetime{delim}Height\n")
         elif tzname == "Local":
             print(f"Prediction date and time in Pacific Time (PST or PDT)")
-            print(f"\nDate        Time  TZ{delim}Height\n")
+            print(f"\nDatetime{delim}Height\n")
         else:
             print("Prediction date and time in Julian Days (JD)")
             print(f"\nDay{delim}Height\n")
