@@ -62,10 +62,10 @@ Running the following code in your Jupyter Notebook:
 from pstide import run_pstide
 
 kwargs = {
-    'segment': 497,                    # Puget Sound location segment number (1-589)
+    'segment': 497,                    # Puget Sound segment (1-589)
     'start': '2025-07-16T12:00:00',    # start datetime in ISO format
-    'length': 1.0,                     # length of time to predict tides (days)
-    'interval': 60,                    # time interval between predictions (minutes)
+    'length': 1.0,                     # length of time to predict (days)
+    'interval': 60,                    # time step of predictions (minutes)
     'pacific': True,                   # use Pacific time (PDT/PST)
     'verbose': True,                   # display results on screen
     'show_plot': True,                 # plot the results
