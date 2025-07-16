@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.18"
+__version__ = "2.1.19"
 
 #----------------------------------------------------------------------------
 #  ps_tide.py - Tide prediction Software for Puget Sound                    
@@ -141,12 +141,15 @@ def print_tide(fout, tide, options, df):
     dt = datetime.strptime(datetext, '%Y-%b-%d %H:%M %Z')
     if options['pacific']:
         timezone = pytz.timezone('US/Pacific')
+        localized_dt = timezone.localize(dt)
+    elif options['julian']:
+        localized_dt = float(datetext)
     else:
         timezone = pytz.timezone('UTC')
-    localized_dt = timezone.localize(dt)
+        localized_dt = timezone.localize(dt)
     df.loc[len(df)] = [localized_dt, float(height_str)]
 
-def predict_tide(**kwargs):
+def run_pstide(**kwargs):
     '''
     Puget Sound Tide Channel Model for Python 3.x
     
@@ -175,7 +178,10 @@ def predict_tide(**kwargs):
         'verbose': Print the predicted tides on screen (default True)
 
     Returns.
-        df: Pandas dataframe of tide predictions
+        dictionary of the following:
+            options: input options
+            segdata: segment data for selected  segment
+            df_tide: Pandas dataframe of tide predictions
         
     '''
     
@@ -204,7 +210,10 @@ def predict_tide(**kwargs):
     
     # Update input options arguments with any provided keyword arguments in kwargs
     options = {**defaults, **kwargs}
-    
+ 
+    if type(options[segment]) is int:
+        options[segment] = str(options[segment])
+ 
     # print a warning for unexpected input kwargs
     unexpected = kwargs.keys() - defaults.keys()
     if unexpected:
@@ -264,23 +273,15 @@ def predict_tide(**kwargs):
     if options['outfile']:
         # print('closing fout')
         fout.close()
+        del fout
     
     result = {
         'options': options,
-        'data': data,
-        'year': year,
-        'month': month,
-        'day': day,
-        'hour': hour,
-        'minute': minute,
-        'second': second,
-        'jd': jd,
-        'jd_utc': jd_utc,
         'segdata': segdata,
-        'tideseries': tideseries
+        'df_tide': df
     }
     
-    return df
+    return result
 
 '''
 # ----------------------------- Main Execution -----------------------------
