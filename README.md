@@ -56,7 +56,7 @@ kwargs = {
 result = run_pstide(**kwargs)
 ```
 
-The code above returns the following output on screen and in the output result, pstide_output.csv and pstide_output.png:
+The code above returns the following output on screen and in the output 'result', 'pstide_output.csv', and 'pstide_output.png':
 
 (note that the output 'result' above is a dictionary that includes the following keys: 'options': the kwargs input options, 'segdata': segment data for the selected segment, 'ps_segments': contents of ps_segments.dat, and 'df_tide': Pandas dataframe containing output of the tide predictions)
 
