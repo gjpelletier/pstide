@@ -42,7 +42,7 @@ If you have not already installed pstide, enter the following with pip or !pip i
 pip install git+https://github.com/gjpelletier/pstide.git
 ```
 
-if you are upgrading from a previous installation of PyMLR, enter the following:<br>
+if you are upgrading from a previous installation, enter the following:<br>
 ```
 pip install git+https://github.com/gjpelletier/pstide.git --upgrade
 ```
