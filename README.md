@@ -121,11 +121,9 @@ Prediction date and time in Pacific Time (PST or PDT)
 2025-Jul-16 14:00 PDT   0.89
 ```
 
-# Map of Puget Sound
+# Maps of Puget Sound and segment numbers
 
 <img width="659" height="851" alt="Fig1_Map_of_Puget_Sound" src="https://github.com/user-attachments/assets/ff6f9d4d-5d91-4cdb-a951-9b0dbe4e6df3" />
-
-# Segment Numbers
 
 ![north_sound](https://github.com/user-attachments/assets/2f210d59-b13a-4a7e-b732-869e4bbbf525)
 
