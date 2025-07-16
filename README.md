@@ -35,6 +35,7 @@ Mofjeld, H. O., A. J. Venturato, et al. (2002). Tidal datum distributions in
   Marine Environmental Laboratory: 39.
 </blockquote>
 
+# Installing pstide
 
 If you have not already installed pstide, enter the following with pip or !pip in your notebook or terminal:<br>
 ```
