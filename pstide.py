@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.27"
+__version__ = "2.1.28"
 
 #----------------------------------------------------------------------------
-#  ps_tide.py - Tide prediction Software for Puget Sound                    
+#  pstide.py - Tide prediction Software for Puget Sound                    
 #                                                                           
-#  Adapted from the original version 1.1.1 for Python 2.x by
+#  Adapted from the original ps_tide.py version 1.1.1 for Python 2.x by
 #  David Finlayson                                                          
 #  Nov 08, 2004                                                             
 #  Version 1.1.1      
 #                                                      
-#  Updated to Python 3.x by 
+#  Modified to run in Python 3.x by 
 #  Greg Pelletier
 #  Jul 15 2025
 #     
@@ -304,6 +304,8 @@ def run_pstide(**kwargs):
         plt.ylabel(ylabel_str, fontsize=12)
         # plt.grid(True)
         plt.legend()
+        plt.savefig('pstide_output.png', 
+                    dpi=300, bbox_inches='tight') 
         plt.show()
 
     result = {
