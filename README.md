@@ -48,7 +48,7 @@ pip install git+https://github.com/gjpelletier/pstide.git --upgrade
 
 # Example
 
-Running the following code in your Jupyter Notebook
+Running the following code in your Jupyter Notebook:
 ```
 # Example use of run_pstide
 from pstide import run_pstide
@@ -71,7 +71,7 @@ kwargs = {
 tides = run_pstide(**kwargs)
 ```
 
-Returns the following output
+Returns the following output on screen:
 ```
              Datetime Height
 2025-Jul-15 17:25 PDT   1.31
