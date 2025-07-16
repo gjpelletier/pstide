@@ -73,32 +73,46 @@ tides = run_pstide(**kwargs)
 
 Returns the following output on screen:
 ```
+Puget Sound Tide Model: Tide Predictions
+
+Segment Index: 497 (Elliott_Bay)
+Longitude: -122.347915  Latitude: 47.591075
+Minor constituents inferred from seattle.hcs
+Starting time: 2025-07-15T19:17:32.899031
+Time step: 60.00 min  Length: 1.00 days
+Mean water level: 2.02 m
+
+Predictions generated: Tue Jul 15 19:17:33 2025 (System)
+Heights in meters above MLLW
+Prediction date and time in Pacific Time (PST or PDT)
+
+Date        Time  TZ,Height
+
              Datetime Height
-2025-Jul-15 17:25 PDT   1.31
-2025-Jul-15 18:25 PDT   2.10
-2025-Jul-15 19:25 PDT   2.84
-2025-Jul-15 20:25 PDT   3.40
-2025-Jul-15 21:25 PDT   3.64
-2025-Jul-15 22:25 PDT   3.56
-2025-Jul-15 23:25 PDT   3.17
-2025-Jul-16 00:25 PDT   2.61
-2025-Jul-16 01:25 PDT   2.00
-2025-Jul-16 02:25 PDT   1.49
-2025-Jul-16 03:25 PDT   1.21
-2025-Jul-16 04:25 PDT   1.19
-2025-Jul-16 05:25 PDT   1.41
-2025-Jul-16 06:25 PDT   1.80
-2025-Jul-16 07:25 PDT   2.22
-2025-Jul-16 08:25 PDT   2.54
-2025-Jul-16 09:25 PDT   2.65
-2025-Jul-16 10:25 PDT   2.52
-2025-Jul-16 11:25 PDT   2.16
-2025-Jul-16 12:25 PDT   1.65
-2025-Jul-16 13:25 PDT   1.14
-2025-Jul-16 14:25 PDT   0.75
-2025-Jul-16 15:25 PDT   0.60
-2025-Jul-16 16:25 PDT   0.75
-```
+2025-Jul-15 19:17 PDT   2.75
+2025-Jul-15 20:17 PDT   3.34
+2025-Jul-15 21:17 PDT   3.63
+2025-Jul-15 22:17 PDT   3.59
+2025-Jul-15 23:17 PDT   3.24
+2025-Jul-16 00:17 PDT   2.69
+2025-Jul-16 01:17 PDT   2.07
+2025-Jul-16 02:17 PDT   1.55
+2025-Jul-16 03:17 PDT   1.23
+2025-Jul-16 04:17 PDT   1.17
+2025-Jul-16 05:17 PDT   1.37
+2025-Jul-16 06:17 PDT   1.74
+2025-Jul-16 07:17 PDT   2.17
+2025-Jul-16 08:17 PDT   2.50
+2025-Jul-16 09:17 PDT   2.65
+2025-Jul-16 10:17 PDT   2.55
+2025-Jul-16 11:17 PDT   2.21
+2025-Jul-16 12:17 PDT   1.72
+2025-Jul-16 13:17 PDT   1.20
+2025-Jul-16 14:17 PDT   0.79
+2025-Jul-16 15:17 PDT   0.61
+2025-Jul-16 16:17 PDT   0.71
+2025-Jul-16 17:17 PDT   1.11
+2025-Jul-16 18:17 PDT   1.72```
 
 # Map of Puget Sound
 
