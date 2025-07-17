@@ -22,74 +22,7 @@ If you are installing for the first time, or upgrading from a previous installat
 pip install git+https://github.com/gjpelletier/pstide.git --upgrade
 ```
 
-# Example 1. Tides for one day in Elliott Bay
-
-Copy/paste and run the following code in your Jupyter Notebook:
-```
-from pstide import run_pstide
-
-kwargs = {
-    'segment': 497,                    # Puget Sound segment (1-589)
-    'start': '2025-07-16T12:00:00',    # start datetime in ISO format
-    'length': 1.0,                     # length of time to predict (days)
-    'interval': 60,                    # time step of predictions (minutes)
-    'pacific': True,                   # use Pacific time (PDT/PST)
-    'verbose': True,                   # display results on screen
-    'show_plot': True,                 # plot the results
-    'outfile': 'pstide_output.csv',    # save results in csv
-    'plotfile': 'pstide_output.png',   # save plot as png
-    }
-    
-result = run_pstide(**kwargs)
-```
-
-Running the code above returns the following output on screen and in the 'result', 'pstide_output.csv', and 'pstide_output.png':
-
-(note that the output 'result' above is a dictionary that includes the following keys: 'options': the kwargs input options, 'segdata': segment data for the selected segment, 'ps_segments': contents of ps_segments.dat, and 'df_tide': Pandas dataframe containing output of the tide predictions)
-
-```
-Puget Sound Tide Model: Tide Predictions
-
-Segment Index: 497 (Elliott_Bay)
-Longitude: -122.347915  Latitude: 47.591075
-Minor constituents inferred from seattle.hcs
-Starting time: 2025-07-16T12:00:00
-Time step: 60.00 min  Length: 1.00 days
-Mean water level: 2.02 m
-
-Predictions generated: Wed Jul 16 13:10:13 2025 (System)
-Heights in meters above MLLW
-Prediction date and time in Pacific Time (PST or PDT)
-
-                 Datetime  Height
-2025-07-16 12:00:00-07:00   1.872
-2025-07-16 13:00:00-07:00   1.346
-2025-07-16 14:00:00-07:00   0.889
-2025-07-16 15:00:00-07:00   0.631
-2025-07-16 16:00:00-07:00   0.653
-2025-07-16 17:00:00-07:00   0.972
-2025-07-16 18:00:00-07:00   1.533
-2025-07-16 19:00:00-07:00   2.220
-2025-07-16 20:00:00-07:00   2.884
-2025-07-16 21:00:00-07:00   3.379
-2025-07-16 22:00:00-07:00   3.598
-2025-07-16 23:00:00-07:00   3.493
-2025-07-17 00:00:00-07:00   3.094
-2025-07-17 01:00:00-07:00   2.494
-2025-07-17 02:00:00-07:00   1.830
-2025-07-17 03:00:00-07:00   1.249
-2025-07-17 04:00:00-07:00   0.873
-2025-07-17 05:00:00-07:00   0.769
-2025-07-17 06:00:00-07:00   0.938
-2025-07-17 07:00:00-07:00   1.314
-2025-07-17 08:00:00-07:00   1.784
-2025-07-17 09:00:00-07:00   2.218
-2025-07-17 10:00:00-07:00   2.501
-2025-07-17 11:00:00-07:00   2.565
-```
-<img width="2619" height="1639" alt="pstide_output" src="https://github.com/user-attachments/assets/681f70bc-53ca-4972-a56a-fd0a2ecaae86" />
-
-# Example 2. Tides in Budd Inlet for the next 28 days
+# Example 1. Tides in Budd Inlet for the next 28 days
 
 Copy/paste and run the following in Jupyter Notebook to produce the figure below showing the next 28 days of tides in Budd Inlet segment 44. The tide predictions are also stored in the result dictionary as a pandas dataframe in result['df_tide']. This example also shows how to get the output datetime values in UTC by using the argument pacific=False:
 ```
@@ -98,7 +31,7 @@ result = run_pstide(segment=44, length=28, pacific=False)
 ```
 <img width="2552" height="1639" alt="pstide_output" src="https://github.com/user-attachments/assets/4772da93-b01d-4081-baaf-61c417539a85" />
 
-# Example 3. Tides at a specified longitide and latitude
+# Example 2. Tides at a specified longitide and latitude
 
 Copy/paste and run the following in Jupyter Notebook to produce the figure below showing the tides closest to lon=-122.615 and lat=47.885 in August 2025. The tide predictions are also stored in the result dictionary as a pandas dataframe in result['df_tide'].
 ```
