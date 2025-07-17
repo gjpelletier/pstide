@@ -100,6 +100,15 @@ result = run_pstide(segment=44, length=28, pacific=False)
 ```
 <img width="2552" height="1639" alt="pstide_output" src="https://github.com/user-attachments/assets/4772da93-b01d-4081-baaf-61c417539a85" />
 
+# Example 3. Tides at a specified longitide and latitude
+
+Copy/paste and run the following in Jupyter Notebook to produce the figure below showing the tides closest to lon=-122.615 and lat=47.885 in August 2025. The tide predictions are also stored in the result dictionary as a pandas dataframe in result['df_tide'].
+```
+from pstide import run_pstide
+result = run_pstide(lon=-122.615, lat=47.885, start= '2025-08-01T00:00:00', length=31)
+```
+<img width="2600" height="1639" alt="pstide_output" src="https://github.com/user-attachments/assets/d6d5df74-10ee-4f6a-a649-faa82c709d0b" />
+
 # User instructions
 
 Running help(run_pstide) in your notebook provides the following user instructions, including a list of the optional keyword arguments, and the contents of the output result dictionary:
