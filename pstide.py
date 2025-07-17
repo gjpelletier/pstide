@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.33"
+__version__ = "2.1.34"
 
 #----------------------------------------------------------------------------
 #  pstide.py - Tide prediction Software for Puget Sound                    
@@ -603,7 +603,7 @@ def run_pstide(**kwargs):
         plt.figure(figsize=(10, 6))
         plt.plot(df['Datetime'], df['Height'], label='Tide')
         plt.title(title_str, fontsize=16)
-        plt.xlabel(xlabel_str, fontsize=12)
+        plt.xlabel(xlabel_str, fontsize=10)
         plt.ylabel(ylabel_str, fontsize=12)
         # plt.grid(True)
         plt.legend()
