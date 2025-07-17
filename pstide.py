@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.35"
+__version__ = "2.1.36"
 
 #----------------------------------------------------------------------------
 #  pstide.py - Tide prediction Software for Puget Sound                    
 #                                                                           
-#  Adapted from the original ps_tide.py version 1.1.1 for Python 2.x by
+#  Adapted from the original pstide.py version 1.1.1 for Python 2.x by
 #  David Finlayson                                                          
 #  Nov 08, 2004                                                             
 #  Version 1.1.1      
@@ -44,7 +44,7 @@ __version__ = "2.1.35"
 #
 #----------------------------------------------------------------------------
 '''
-START OF README.txt
+START OF README.txt for v 1.1.1
 
 This is pstide.py version 1.1.1
 ================================
@@ -329,7 +329,7 @@ wait until I graduate or some kind programmer donates their energy.
 David Finlayson
 November 8, 2004
 
-END OF README.txt
+END OF README.txt for v 1.1.1
 '''
 
 import sys
