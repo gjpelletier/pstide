@@ -17,12 +17,7 @@ The pstide code is intended only to be used for research purposes; not for navig
 
 # Installing pstide
 
-If you have not already installed pstide in your Python environment, enter the following with pip or !pip in your notebook or terminal:<br>
-```
-pip install git+https://github.com/gjpelletier/pstide.git
-```
-
-If you are upgrading from a previous installation, enter the following:<br>
+If you are installing for the first time, or upgrading from a previous installation, enter the following with pip or !pip in your notebook or terminal:<br>
 ```
 pip install git+https://github.com/gjpelletier/pstide.git --upgrade
 ```
