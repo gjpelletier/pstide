@@ -24,7 +24,7 @@ pip install git+https://github.com/gjpelletier/pstide.git --upgrade
 
 # Example 1. Tides in Budd Inlet for the next 28 days
 
-Copy/paste and run the following in Jupyter Notebook to produce the figure below showing the next 28 days of tides in Budd Inlet segment 44. This example also shows how to get the output datetime values in UTC by using the argument pacific=False. The tide predictions are also stored in the result dictionary as a pandas dataframe in result['df_tide'].
+Copy/paste and run the following in Jupyter Notebook to produce the figure below showing the next 28 days of tides in Budd Inlet segment 44. This example shows how to specify the time period (length) of the tide predictions. The defualt starting datetime is the current time. This example also shows how to get the output datetime values in UTC by using the argument pacific=False. The tide predictions are also stored in the result dictionary as a pandas dataframe in result['df_tide'].
 ```
 from pstide import run_pstide
 result = run_pstide(segment=44, length=28, pacific=False)
@@ -33,7 +33,7 @@ result = run_pstide(segment=44, length=28, pacific=False)
 
 # Example 2. Tides at a specified longitide and latitude
 
-Copy/paste and run the following in Jupyter Notebook to produce the figure below showing the tides closest to lon=-122.615 and lat=47.885 in August 2025. The tide predictions are also stored in the result dictionary as a pandas dataframe in result['df_tide'].
+Copy/paste and run the following in Jupyter Notebook to produce the figure below showing the tides closest to lon=-122.615 and lat=47.885 in August 2025. This example shows how to specify the start datetime of the tide predictions. The tide predictions are also stored in the result dictionary as a pandas dataframe in result['df_tide'].
 ```
 from pstide import run_pstide
 result = run_pstide(lon=-122.615, lat=47.885, start='2025-08-01T00:00:00', length=31)
