@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.46"
+__version__ = "2.1.47"
 
 #----------------------------------------------------------------------------
 #  pstide.py - Tide prediction Software for Puget Sound                    
@@ -500,6 +500,7 @@ def run_pstide(**kwargs):
     from pstide import ps_segments, segment_locations
     from datetime import datetime, timedelta
     import pandas as pd
+    import numpy as np
     import matplotlib.pyplot as plt
 
     # get current datetime rounded to next nearest hour for default start
