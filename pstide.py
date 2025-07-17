@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.43"
+__version__ = "2.1.44"
 
 #----------------------------------------------------------------------------
 #  pstide.py - Tide prediction Software for Puget Sound                    
@@ -26280,6 +26280,13 @@ def segment_locations():
         )
 
     df = pd.DataFrame(array, columns=['segment', 'name','seg_up','seg_down','start_lat','start_lon','end_lat','end_lon'])
+    df['segment'] = df['segment'].astype(int)
+    df['seg_up'] = df['seg_up'].astype(int)
+    df['seg_down'] = df['seg_down'].astype(int)
+    df['start_lat'] = df['start_lat'].astype(float)
+    df['start_lon'] = df['start_lon'].astype(float)
+    df['end_lat'] = df['end_lat'].astype(float)
+    df['end_lon'] = df['end_lon'].astype(float)
 
     return df
  
