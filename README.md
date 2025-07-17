@@ -61,11 +61,11 @@ run_pstide(**kwargs)
       with updated observations. Seattle, WA, Pacific Marine Environmental
       Laboratory: 103pp. NOAA Technical Memorandum ERL PMEL-84
 
-    Args.
-        'segment': Segment number as text '1' through '589' (default '497')
-        'lon': optional longitude to use the nearest segment (default None)
-        'lat': optional latitude to use the nearest segment (default None)
-        'start': Starting datetime as ISO text string (default datetime.now().isoformat()),
+    Keyword arguments (any/all are optional)
+        'segment': Optional segment number between 1 and 589 (default 497)
+        'lon': Optional longitude to use the nearest segment (default None)
+        'lat': Optional latitude to use the nearest segment (default None)
+        'start': Start datetime as ISO (e.g. '2025-08-01T00:00:00') (default now),
         'length': Length of tide time series days (default 1.0),
         'interval': Time interval of tide time series minutes (default 60),
         'pacific': Use Pacific time zone instead of UTC (default True),
