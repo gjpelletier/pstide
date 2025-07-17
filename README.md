@@ -33,7 +33,7 @@ Before using pstide for the first time, you must download the [ps_segments.dat](
 
 https://github.com/gjpelletier/pstide/blob/main/ps_segments.dat
 
-# Example use of pstide
+# Example 1. Hourly tides for one day in Elliott Bay
 
 This example assumes you have already followed the instructions above for installing pstide and copying the ps_segments.dat file to your working directory.
 
@@ -101,6 +101,15 @@ Prediction date and time in Pacific Time (PST or PDT)
 2025-07-17 11:00:00-07:00   2.565
 ```
 <img width="2624" height="1654" alt="pstide_output" src="https://github.com/user-attachments/assets/0d35e0d9-4b68-44bc-8bb1-f806c8baa1bd" />
+
+# Example 2. Tides in Budd Inlet for the next 28 days
+
+Copy/paste and run the following in Jupyter Notebook to produce the figure below:
+```
+from pstide import run_pstide
+result = run_pstide(segment=44, length=28)
+```
+<img width="2552" height="1639" alt="pstide_output" src="https://github.com/user-attachments/assets/ed2b9081-245e-46b0-9727-4be5b69121dc" />
 
 # User instructions
 
