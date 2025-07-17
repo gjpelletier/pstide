@@ -138,8 +138,8 @@ run_pstide(**kwargs)
         'length': Length of tide time series days (default 1.0),
         'interval': Time interval of tide time series minutes (default 60),
         'pacific': Use Pacific time zone instead of UTC (default True),
-        'verbose': Print the predicted tides on screen (default True)
-        'show_plot': Make a plot of the tide height time series (default False)
+        'verbose': Print the predicted tides on screen (default False)
+        'show_plot': Make a plot of the tide height time series (default True)
         'title': Inlcude title and header info in output text file (default True),
         'outfile': Name of output text file to save (default 'pstide_output.csv'),
         'plotfile': Name of output plot file to save (default 'pstide_output.png'),
@@ -151,7 +151,7 @@ run_pstide(**kwargs)
         dictionary of the following:
             options: input options
             segdata: segment data for selected segment
-            ps_segments: dictionary of contents of ps_segments.data
+            ps_segments: dictionary of contents of ps_segments.dat
             df_tide: Pandas dataframe of tide predictions
 ```
 
