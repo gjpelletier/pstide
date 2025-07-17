@@ -130,6 +130,8 @@ run_pstide(**kwargs)
 
     Args.
         'segment': Segment number as text '1' through '589' (default '497')
+        'lon': optional longitude to use the nearest segment (default None)
+        'lat': optional latitude to use the nearest segment (default None)
         'start': Starting datetime as ISO text string (default datetime.now().isoformat()),
         'length': Length of tide time series days (default 1.0),
         'interval': Time interval of tide time series minutes (default 60),
