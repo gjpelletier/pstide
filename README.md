@@ -100,7 +100,7 @@ Prediction date and time in Pacific Time (PST or PDT)
 2025-07-17 10:00:00-07:00   2.501
 2025-07-17 11:00:00-07:00   2.565
 ```
-<img width="2624" height="1654" alt="pstide_output" src="https://github.com/user-attachments/assets/0d35e0d9-4b68-44bc-8bb1-f806c8baa1bd" />
+<img width="2619" height="1639" alt="pstide_output" src="https://github.com/user-attachments/assets/681f70bc-53ca-4972-a56a-fd0a2ecaae86" />
 
 # Example 2. Tides in Budd Inlet for the next 28 days
 
