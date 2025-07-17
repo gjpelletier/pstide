@@ -22,7 +22,7 @@ If you are installing for the first time, or upgrading from a previous installat
 pip install git+https://github.com/gjpelletier/pstide.git --upgrade
 ```
 
-# Example 1. Hourly tides for one day in Elliott Bay
+# Example 1. Tides for one day in Elliott Bay
 
 This example assumes you have already followed the instructions above for installing pstide.
 
