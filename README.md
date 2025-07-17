@@ -27,15 +27,9 @@ If you are upgrading from a previous installation, enter the following:<br>
 pip install git+https://github.com/gjpelletier/pstide.git --upgrade
 ```
 
-# Before first use of pstide
-
-Before using pstide for the first time, you must download the [ps_segments.dat](https://github.com/gjpelletier/pstide/blob/main/ps_segments.dat) file from the following link and copy it into your working directory:
-
-https://github.com/gjpelletier/pstide/blob/main/ps_segments.dat
-
 # Example 1. Hourly tides for one day in Elliott Bay
 
-This example assumes you have already followed the instructions above for installing pstide and copying the ps_segments.dat file to your working directory.
+This example assumes you have already followed the instructions above for installing pstide.
 
 Copy/paste and run the following code in your Jupyter Notebook:
 ```
