@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.42"
+__version__ = "2.1.43"
 
 #----------------------------------------------------------------------------
 #  pstide.py - Tide prediction Software for Puget Sound                    
@@ -26279,7 +26279,7 @@ def segment_locations():
         [	589,"Dabob_Bay_Spur",10043,581,47.78058,-122.79323,47.78163,-122.83373	],]
         )
 
-    df = pd.DataFrame(array, columns=['segment', 'name','seg_up','seg_down','lat_start','lon_start','lat_end','lon_end'])
+    df = pd.DataFrame(array, columns=['segment', 'name','seg_up','seg_down','start_lat','start_lon','end_lat','end_lon'])
 
     return df
  
