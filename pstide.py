@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.45"
+__version__ = "2.1.46"
 
 #----------------------------------------------------------------------------
 #  pstide.py - Tide prediction Software for Puget Sound                    
@@ -467,6 +467,8 @@ def run_pstide(**kwargs):
 
     Args.
         'segment': Segment number as text '1' through '589' (default '497')
+        'lon': optional longitude to use the nearest segment (default None) 
+        'lat': optional latitude to use the nearest segment (default None) 
         'start': Starting datetime as ISO text string (default datetime.now().isoformat()), 
         'length': Length of tide time series days (default 1.0),
         'interval': Time interval of tide time series minutes (default 60),
@@ -510,6 +512,8 @@ def run_pstide(**kwargs):
     # Define default values of input data arguments
     defaults = {
         'segment': '497', 
+        'lon': None,
+        'lat': None,
         'start': iso_date, 
         'length': 1.0,
         'interval': 60,
@@ -538,6 +542,42 @@ def run_pstide(**kwargs):
 
     # load the contents of segment_locations.dat into segment_locations dataframe
     segment_locations = segment_locations()
+
+    # find the min and max lon and lat and map extent of all segments
+    buffer = 0.05
+    min_start_lon = min(segment_locations['start_lon'])
+    min_end_lon = min(segment_locations['end_lon'])
+    max_start_lon = max(segment_locations['start_lon'])
+    max_end_lon = max(segment_locations['end_lon'])
+    min_start_lat = min(segment_locations['start_lat'])
+    min_end_lat = min(segment_locations['end_lat'])
+    max_start_lat = max(segment_locations['start_lat'])
+    max_end_lat = max(segment_locations['end_lat'])
+    min_lon = min(min_start_lon, min_end_lon) - buffer
+    max_lon = max(max_start_lon, max_end_lon) + buffer
+    min_lat = min(min_start_lat, min_end_lat) - buffer
+    max_lat = max(max_start_lat, max_end_lat) + buffer
+    map_extent = [min_lon,max_lon,min_lat,max_lat]
+
+    # Use input lon and lat to locate the nearest segment
+    if options['lon'] != None and options['lat'] != None:
+        ctrl = options['lon'] >= min_lon and options['lon'] <= max_lon
+        if not ctrl:
+            print(f'ERROR: Longitude {options['lon']} is not located near a Puget Sound segment.')
+            sys.exit()
+        ctrl = options['lat'] >= min_lat and options['lat'] <= max_lat
+        if not ctrl:
+            print(f'ERROR: Latitude {options['lat']} is not located near a Puget Sound segment.')
+            sys.exit()
+        # find the segment that is closest to the input lon and lat
+        target_lon = options['lon']
+        target_lat = options['lat']
+        segment_locations['distance1'] = np.sqrt((segment_locations['start_lon'] - target_lon)**2 + 
+            (segment_locations['start_lat'] - target_lat)**2)
+        segment_locations['distance2'] = np.sqrt((segment_locations['end_lon'] - target_lon)**2 + 
+            (segment_locations['end_lat'] - target_lat)**2)
+        closest_index = segment_locations[['distance1', 'distance2']].min(axis=1).idxmin()
+        options['segment'] = segment_locations.iloc[closest_index]['segment']
 
     # convert segment to str and check that it is in the list of keys for ps_segments.dat
     if type(options['segment']) is int:
