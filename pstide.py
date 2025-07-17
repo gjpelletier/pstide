@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.36"
+__version__ = "2.1.37"
 
 #----------------------------------------------------------------------------
 #  pstide.py - Tide prediction Software for Puget Sound                    
@@ -494,14 +494,21 @@ def run_pstide(**kwargs):
     import pickle
     from pstide import cal_to_jd, hms_to_fday, lt_to_ut, predict_tides
     from pstide import print_title, print_tide
-    from datetime import datetime
+    from datetime import datetime, timedelta
     import pandas as pd
     import matplotlib.pyplot as plt
+
+    # get current datetime rounded to next nearest hour for default start
+    iso_date = datetime.now().isoformat()    
+    dt = datetime.fromisoformat(iso_date)
+    if dt.minute > 0 or dt.second > 0 or dt.microsecond > 0:
+        dt = dt.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1)
+    iso_date = dt.isoformat()
     
     # Define default values of input data arguments
     defaults = {
         'segment': '497', 
-        'start': datetime.now().isoformat(), 
+        'start': iso_date, 
         'length': 1.0,
         'interval': 60,
         'pacific': True,
