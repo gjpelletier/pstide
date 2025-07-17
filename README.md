@@ -137,12 +137,12 @@ run_pstide(**kwargs)
         'feet': Use feet instead of meters for units of tide height (default False),
 
     Returns.
-        dictionary of the following:
-            options: input options
-            segdata: segment data for selected segment
-            ps_segments: dictionary of contents of ps_segments.dat
-            segment_locations: dataframe of contents of segment_locations.dat
-            df_tide: dataframe of tide predictions
+        dictionary of all results including the following:
+            options: input options specified in kwargs
+            segdata: segment data for the selected segment
+            ps_segments: dictionary of ps_segments.dat for all segments
+            segment_locations: dataframe of segment_locations.dat for all segments
+            df_tide: dataframe of tide predictions for the selected segment
 ```
 
 # Maps of Puget Sound and segment numbers
