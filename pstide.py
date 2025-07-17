@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.47"
+__version__ = "2.1.48"
 
 #----------------------------------------------------------------------------
 #  pstide.py - Tide prediction Software for Puget Sound                    
@@ -581,7 +581,8 @@ def run_pstide(**kwargs):
         options['segment'] = segment_locations.iloc[closest_index]['segment']
 
     # convert segment to str and check that it is in the list of keys for ps_segments.dat
-    if type(options['segment']) is int:
+    # if type(options['segment']) is int:
+    if not isinstance(options['segment'], str):
         options['segment'] = str(options['segment'])
     keys_list = list(data.keys())
     ctrl = options['segment'] in keys_list
