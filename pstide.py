@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.37"
+__version__ = "2.1.38"
 
 #----------------------------------------------------------------------------
 #  pstide.py - Tide prediction Software for Puget Sound                    
@@ -471,8 +471,8 @@ def run_pstide(**kwargs):
         'length': Length of tide time series days (default 1.0),
         'interval': Time interval of tide time series minutes (default 60),
         'pacific': Use Pacific time zone instead of UTC (default True),
-        'verbose': Print the predicted tides on screen (default True)
-        'show_plot': Make a plot of the tide height time series (default False)
+        'verbose': Print the predicted tides on screen (default False)
+        'show_plot': Make a plot of the tide height time series (default True)
         'title': Inlcude title and header info in output text file (default True), 
         'outfile': Name of output text file to save (default 'pstide_output.csv'), 
         'plotfile': Name of output plot file to save (default 'pstide_output.png'), 
@@ -518,8 +518,8 @@ def run_pstide(**kwargs):
         'delimiter': ',', 
         'julian': False,
         'feet': False,
-        'verbose': True,
-        'show_plot': False
+        'verbose': False,
+        'show_plot': True
         }
     
     # Update input options arguments with any provided keyword arguments in kwargs
@@ -596,7 +596,8 @@ def run_pstide(**kwargs):
 
     # optional plot of tide time series
     if options['show_plot']:
-        title_str = 'Tide Height at ' + segdata['name']
+        # title_str = 'Tide Height at ' + segdata['name']
+        title_str = 'Tide Height at ' + segdata['name'] + ' (segment ' + options['segment'] + ')'
         if options['feet']:
             ylabel_str = 'Tide Height (feet MLLW)'
         else:
