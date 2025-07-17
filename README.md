@@ -141,7 +141,8 @@ run_pstide(**kwargs)
             options: input options
             segdata: segment data for selected segment
             ps_segments: dictionary of contents of ps_segments.dat
-            df_tide: Pandas dataframe of tide predictions
+            segment_locations: dataframe of contents of segment_locations.dat
+            df_tide: dataframe of tide predictions
 ```
 
 # Maps of Puget Sound and segment numbers
