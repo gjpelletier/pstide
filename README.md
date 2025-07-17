@@ -104,7 +104,7 @@ Prediction date and time in Pacific Time (PST or PDT)
 
 # Example 2. Tides in Budd Inlet for the next 28 days
 
-Copy/paste and run the following in Jupyter Notebook to produce the figure below showing the next 28 days of tides in Budd Inlet segment 44. The tide predictions are also stored in the result dictionary as a panadas dataframe in result['df_tide']:
+Copy/paste and run the following in Jupyter Notebook to produce the figure below showing the next 28 days of tides in Budd Inlet segment 44. The tide predictions are also stored in the result dictionary as a pandas dataframe in result['df_tide']:
 ```
 from pstide import run_pstide
 result = run_pstide(segment=44, length=28)
