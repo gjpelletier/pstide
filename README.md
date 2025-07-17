@@ -104,12 +104,12 @@ Prediction date and time in Pacific Time (PST or PDT)
 
 # Example 2. Tides in Budd Inlet for the next 28 days
 
-Copy/paste and run the following in Jupyter Notebook to produce the figure below showing the next 28 days of tides in Budd Inlet segment 44. The tide predictions are also stored in the result dictionary as a pandas dataframe in result['df_tide']:
+Copy/paste and run the following in Jupyter Notebook to produce the figure below showing the next 28 days of tides in Budd Inlet segment 44. The tide predictions are also stored in the result dictionary as a pandas dataframe in result['df_tide']. This example also shows how to get the output datetime values in UTC by using the argument pacific=False:
 ```
 from pstide import run_pstide
-result = run_pstide(segment=44, length=28)
+result = run_pstide(segment=44, length=28, pacific=False)
 ```
-<img width="2552" height="1639" alt="pstide_output" src="https://github.com/user-attachments/assets/ed2b9081-245e-46b0-9727-4be5b69121dc" />
+<img width="2552" height="1639" alt="pstide_output" src="https://github.com/user-attachments/assets/4772da93-b01d-4081-baaf-61c417539a85" />
 
 # User instructions
 
