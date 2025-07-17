@@ -24,8 +24,6 @@ pip install git+https://github.com/gjpelletier/pstide.git --upgrade
 
 # Example 1. Tides for one day in Elliott Bay
 
-This example assumes you have already followed the instructions above for installing pstide.
-
 Copy/paste and run the following code in your Jupyter Notebook:
 ```
 from pstide import run_pstide
