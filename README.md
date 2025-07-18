@@ -42,6 +42,10 @@ result = run_pstide(lon=-122.615, lat=47.885, start='2025-08-01T00:00:00', lengt
 ```
 <img width="2600" height="1639" alt="pstide_output" src="https://github.com/user-attachments/assets/d6d5df74-10ee-4f6a-a649-faa82c709d0b" />
 
+# Example 3. Map the locations of model segments
+
+<img width="2540" height="3417" alt="pstide_segments" src="https://github.com/user-attachments/assets/850472ad-63a8-435c-837b-28a1af2469ff" />
+
 # User instructions
 
 Running help(run_pstide) in your notebook provides the following user instructions, including a list of the optional keyword arguments, and the contents of the output result dictionary:
