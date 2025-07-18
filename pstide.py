@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.50"
+__version__ = "2.1.51"
 
 #----------------------------------------------------------------------------
 #  pstide.py - Tide prediction Software for Puget Sound                    
@@ -672,13 +672,21 @@ def run_pstide(**kwargs):
         
     return result
 
-def map_segment_locations(
+def map_segments(
     pngfile='pstide_segments.png', 
     map_extent=[-123.20836, -122.16672, 47.00518, 48.47134],
     figsize=(10, 14),
     fontsize=5):
     '''
-    map the segment locations and save as png
+    Map the segment locations and save as png
+    
+    Optional keyword arguments:
+        pngfile: name of the saved map file (default pstide_segments.png
+        map_extent: default [-123.20836, -122.16672, 47.00518, 48.47134],
+        figsize: figure size (default (10, 14)),
+        fontsize: font size for labeling segments (default 5)
+
+    Returns a saved png file of the map show segment locations
     '''
     import pandas as pd
     import matplotlib.pyplot as plt
