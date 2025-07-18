@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.52"
+__version__ = "2.1.53"
 
 #----------------------------------------------------------------------------
 #  pstide.py - Tide prediction Software for Puget Sound                    
@@ -714,7 +714,7 @@ def map_segments(
         ax.plot(
             [row['start_lon'], row['end_lon']],
             [row['start_lat'], row['end_lat']],
-            color='dimgray', linewidth=1, transform=ccrs.PlateCarree()
+            color='lightgray', linewidth=1, transform=ccrs.PlateCarree()
         )
     
     # Plot text from DataFrame
