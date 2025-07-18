@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.51"
+__version__ = "2.1.52"
 
 #----------------------------------------------------------------------------
 #  pstide.py - Tide prediction Software for Puget Sound                    
@@ -577,7 +577,12 @@ def run_pstide(**kwargs):
             (segment_locations['start_lat'] - target_lat)**2)
         segment_locations['distance2'] = np.sqrt((segment_locations['end_lon'] - target_lon)**2 + 
             (segment_locations['end_lat'] - target_lat)**2)
-        closest_index = segment_locations[['distance1', 'distance2']].min(axis=1).idxmin()
+        segment_locations['distance3'] = np.sqrt((segment_locations['mid_lon'] - target_lon)**2 + 
+            (segment_locations['mid_lat'] - target_lat)**2)
+        closest_index = segment_locations[['distance1','distance2','distance3']].min(axis=1).idxmin()
+        closest_distance = min(segment_locations[['distance1', 'distance2', 'distance3']].min(axis=1))
+        if closest_distance > 0.05:
+            print(f'Warning, the nearest segment to target lat {target_lat} lon {target_lon} is {closest_distance:.3f} deg from the location')
         options['segment'] = segment_locations.iloc[closest_index]['segment']
 
     # convert segment to str and check that it is in the list of keys for ps_segments.dat
@@ -26394,6 +26399,8 @@ def segment_locations():
     df['start_lon'] = df['start_lon'].astype(float)
     df['end_lat'] = df['end_lat'].astype(float)
     df['end_lon'] = df['end_lon'].astype(float)
+    df['mid_lat'] = (df['start_lat'] + df['end_lat']) / 2
+    df['mid_lon'] = (df['start_lon'] + df['end_lon']) / 2
 
     return df
  
