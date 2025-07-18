@@ -44,7 +44,7 @@ result = run_pstide(lon=-122.615, lat=47.885, start='2025-08-01T00:00:00', lengt
 
 # Example 3. Map the locations of model segments
 
-Copy/paste and run the following in Jupyter Notebook to produce a map showing the locations of the model segments. The map will be saved in the working directory with the default name 'pstide_segments.png'.
+Copy/paste and run the following in Jupyter Notebook to produce a map showing the locations of the model segments. The map will be saved in the working directory with the default name 'pstide_segments.png'. The dataframe of information about segment locations is saved when you use run_pstide in result['segment_locations']
 ```
 from pstide import map_segments
 map_segments()
