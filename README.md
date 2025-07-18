@@ -44,6 +44,11 @@ result = run_pstide(lon=-122.615, lat=47.885, start='2025-08-01T00:00:00', lengt
 
 # Example 3. Map the locations of model segments
 
+Copy/paste and run the following in Jupyter Notebook to produce a map showing the locations of the model segments. The map will be saved in the working directory with the default name 'pstide_segments.png'.
+```
+from pstide import map_segment_locations
+map_segment_locations()
+```
 <img width="2540" height="3417" alt="pstide_segments" src="https://github.com/user-attachments/assets/850472ad-63a8-435c-837b-28a1af2469ff" />
 
 # User instructions
