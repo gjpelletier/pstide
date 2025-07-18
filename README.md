@@ -1,6 +1,6 @@
 # Puget Sound Tide Channel Model for Python
 
-A Python module for prediction of tides within Puget Sound for scientific research
+A Python module for prediction of tides within Puget Sound
 
 Adapted from the pstide.py module for Python 2.x by David Finlayson
 
