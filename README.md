@@ -49,7 +49,7 @@ Copy/paste and run the following in Jupyter Notebook to produce a map showing th
 from pstide import map_segments
 map_segments()
 ```
-<img width="2540" height="3417" alt="pstide_segments" src="https://github.com/user-attachments/assets/850472ad-63a8-435c-837b-28a1af2469ff" />
+<img width="2540" height="3417" alt="pstide_segments" src="https://github.com/user-attachments/assets/18150266-e308-4041-a071-291064f96759" />
 
 # User instructions
 
