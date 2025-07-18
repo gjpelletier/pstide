@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.49"
+__version__ = "2.1.50"
 
 #----------------------------------------------------------------------------
 #  pstide.py - Tide prediction Software for Puget Sound                    
@@ -671,6 +671,63 @@ def run_pstide(**kwargs):
     }
         
     return result
+
+def map_segment_locations(
+    pngfile='pstide_segments.png', 
+    map_extent=[-123.20836, -122.16672, 47.00518, 48.47134],
+    figsize=(10, 14),
+    fontsize=5):
+    '''
+    map the segment locations and save as png
+    '''
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    import cartopy.crs as ccrs
+    import cartopy.feature as cfeature
+    from pstide import segment_locations
+    
+    # load the dataframe of segment_locations
+    df = segment_locations()
+    
+    # Create a map with Cartopy
+    fig, ax = plt.subplots(subplot_kw={'projection': ccrs.PlateCarree()},figsize=figsize)
+    ax.set_extent(map_extent, crs=ccrs.PlateCarree())  # Adjust extent as needed
+    
+    # Add detailed coastlines
+    ax.coastlines(resolution='10m', color='silver', linewidth=0.8)
+    
+    # Plot line segments
+    for _, row in df.iterrows():
+        ax.plot(
+            [row['start_lon'], row['end_lon']],
+            [row['start_lat'], row['end_lat']],
+            color='dimgray', linewidth=1, transform=ccrs.PlateCarree()
+        )
+    
+    # Plot text from DataFrame
+    for _, row in df.iterrows():
+        ax.text(
+            # row['start_lon'], row['start_lat'], str(row['segment']),
+            (row['start_lon'] + row['end_lon'])/2, 
+            (row['start_lat'] + row['end_lat'])/2, 
+            str(row['segment']),
+            transform=ccrs.PlateCarree(),
+            fontsize=fontsize, color='k', ha='center', va='center'
+        )
+    
+    # Add title and show the plot
+    ax.set_title('Puget Sound Tide Channel Model Segments')
+    
+    # Add gridlines with latitude and longitude ticks
+    gl = ax.gridlines(draw_labels=True, linestyle='--', color='gray', alpha=0.5)
+    gl.top_labels = False
+    gl.right_labels = False
+    gl.xlabel_style = {'size': 10, 'color': 'black'}
+    gl.ylabel_style = {'size': 10, 'color': 'black'}
+    if pngfile:
+        plt.savefig(pngfile, 
+                    dpi=300, bbox_inches='tight') 
+    plt.show()
     
 #------------------------------------------------------------------------------
 # calendar.py - A library of calendar functions
