@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.54"
+__version__ = "2.1.55"
 
 #----------------------------------------------------------------------------
 #  pstide.py - Tide prediction Software for Puget Sound                    
@@ -546,19 +546,19 @@ def run_pstide(**kwargs):
     # load the contents of ps_segments.dat into data dictionary
     data = ps_segments()
 
-    # load the contents of segment_locations.dat into segment_locations dataframe
-    segment_locations = segment_locations()
+    # load the contents of segment_locations.dat into df_segments dataframe
+    df_segments = segment_locations()
 
     # find the min and max lon and lat and map extent of all segments
     buffer = 0.05
-    min_start_lon = min(segment_locations['start_lon'])
-    min_end_lon = min(segment_locations['end_lon'])
-    max_start_lon = max(segment_locations['start_lon'])
-    max_end_lon = max(segment_locations['end_lon'])
-    min_start_lat = min(segment_locations['start_lat'])
-    min_end_lat = min(segment_locations['end_lat'])
-    max_start_lat = max(segment_locations['start_lat'])
-    max_end_lat = max(segment_locations['end_lat'])
+    min_start_lon = min(df_segments['start_lon'])
+    min_end_lon = min(df_segments['end_lon'])
+    max_start_lon = max(df_segments['start_lon'])
+    max_end_lon = max(df_segments['end_lon'])
+    min_start_lat = min(df_segments['start_lat'])
+    min_end_lat = min(df_segments['end_lat'])
+    max_start_lat = max(df_segments['start_lat'])
+    max_end_lat = max(df_segments['end_lat'])
     min_lon = min(min_start_lon, min_end_lon) - buffer
     max_lon = max(max_start_lon, max_end_lon) + buffer
     min_lat = min(min_start_lat, min_end_lat) - buffer
@@ -578,17 +578,17 @@ def run_pstide(**kwargs):
         # find the segment that is closest to the input lon and lat
         target_lon = options['lon']
         target_lat = options['lat']
-        segment_locations['distance1'] = np.sqrt((segment_locations['start_lon'] - target_lon)**2 + 
-            (segment_locations['start_lat'] - target_lat)**2)
-        segment_locations['distance2'] = np.sqrt((segment_locations['end_lon'] - target_lon)**2 + 
-            (segment_locations['end_lat'] - target_lat)**2)
-        segment_locations['distance3'] = np.sqrt((segment_locations['mid_lon'] - target_lon)**2 + 
-            (segment_locations['mid_lat'] - target_lat)**2)
-        closest_index = segment_locations[['distance1','distance2','distance3']].min(axis=1).idxmin()
-        closest_distance = min(segment_locations[['distance1', 'distance2', 'distance3']].min(axis=1))
+        df_segments['distance1'] = np.sqrt((df_segments['start_lon'] - target_lon)**2 + 
+            (df_segments['start_lat'] - target_lat)**2)
+        df_segments['distance2'] = np.sqrt((df_segments['end_lon'] - target_lon)**2 + 
+            (df_segments['end_lat'] - target_lat)**2)
+        df_segments['distance3'] = np.sqrt((df_segments['mid_lon'] - target_lon)**2 + 
+            (df_segments['mid_lat'] - target_lat)**2)
+        closest_index = df_segments[['distance1','distance2','distance3']].min(axis=1).idxmin()
+        closest_distance = min(df_segments[['distance1', 'distance2', 'distance3']].min(axis=1))
         if closest_distance > 0.05:
             print(f'Warning - the nearest segment to the target lat {target_lat} and lon {target_lon} is {closest_distance:.3f} degrees from the target')
-        options['segment'] = segment_locations.iloc[closest_index]['segment']
+        options['segment'] = df_segments.iloc[closest_index]['segment']
 
     # convert segment to str and check that it is in the list of keys for ps_segments.dat
     # if type(options['segment']) is int:
