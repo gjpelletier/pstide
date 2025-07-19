@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.53"
+__version__ = "2.1.54"
 
 #----------------------------------------------------------------------------
 #  pstide.py - Tide prediction Software for Puget Sound                    
@@ -512,7 +512,7 @@ def run_pstide(**kwargs):
     
     # Define default values of input data arguments
     defaults = {
-        'segment': '497', 
+        'segment': None, 
         'lon': None,
         'lat': None,
         'start': iso_date, 
@@ -538,6 +538,11 @@ def run_pstide(**kwargs):
         # raise ValueError(f"Unexpected argument(s): {unexpected}")
         print(f"Unexpected input kwargs: {unexpected}")
 
+    ctrl = options['segment'] != None or (options['lat'] != None and options['lon'] != None)
+    if not ctrl:
+        print(f'ERROR: Use keyword argument of either a segment, or lon and lat')
+        sys.exit()
+        
     # load the contents of ps_segments.dat into data dictionary
     data = ps_segments()
 
@@ -582,7 +587,7 @@ def run_pstide(**kwargs):
         closest_index = segment_locations[['distance1','distance2','distance3']].min(axis=1).idxmin()
         closest_distance = min(segment_locations[['distance1', 'distance2', 'distance3']].min(axis=1))
         if closest_distance > 0.05:
-            print(f'Warning, the nearest segment to target lat {target_lat} lon {target_lon} is {closest_distance:.3f} deg from the location')
+            print(f'Warning - the nearest segment to the target lat {target_lat} and lon {target_lon} is {closest_distance:.3f} degrees from the target')
         options['segment'] = segment_locations.iloc[closest_index]['segment']
 
     # convert segment to str and check that it is in the list of keys for ps_segments.dat
@@ -670,8 +675,8 @@ def run_pstide(**kwargs):
     result = {
         'options': options,
         'segdata': segdata,
-        'ps_segments': data,
-        'segment_locations': segment_locations,
+        'ps_segments': ps_segments(),
+        'segment_locations': segment_locations(),
         'df_tide': df
     }
         
