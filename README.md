@@ -73,11 +73,11 @@ run_pstide(**kwargs)
       Laboratory: 103pp. NOAA Technical Memorandum ERL PMEL-84
 
     Keyword arguments (any/all are optional)
-        'segment': Optional segment number between 1 and 589 (default 497)
+        'segment': Optional segment number between 1 and 589 (default None)
         'lon': Optional longitude to use the nearest segment (default None)
         'lat': Optional latitude to use the nearest segment (default None)
         'start': Start datetime as ISO (e.g. '2025-08-01T00:00:00') (default now),
-        'length': Length of tide time series days (default 1.0),
+        'length': Length of predicted tide time series days (default 7.0),
         'interval': Time interval of tide time series minutes (default 60),
         'pacific': Use Pacific time zone instead of UTC (default True),
         'verbose': Print the predicted tides on screen (default False)
@@ -92,10 +92,10 @@ run_pstide(**kwargs)
     Returns.
         dictionary of all results including the following:
             options: input options specified in kwargs
-            segdata: segment data for the selected segment
-            ps_segments: dictionary of ps_segments.dat for all segments
-            segment_locations: dataframe of segment_locations.dat for all segments
-            df_tide: dataframe of tide predictions for the selected segment
+            segdata: segment data for the harmonic constituents of the selected segment
+            harmonic_constants: dictionary of harmonic constituents for all segments
+            segment_locations: dataframe of segment locations data for all segments
+            tides: dataframe of tide predictions for the selected segment
 ```
 
 # Detailed maps of segment locations
