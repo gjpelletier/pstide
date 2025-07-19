@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.57"
+__version__ = "2.1.58"
 
 #----------------------------------------------------------------------------
 #  pstide.py - Tide prediction Software for Puget Sound                    
@@ -470,7 +470,7 @@ def run_pstide(**kwargs):
         'lon': Optional longitude to use the nearest segment (default None) 
         'lat': Optional latitude to use the nearest segment (default None) 
         'start': Start datetime as ISO (e.g. '2025-08-01T00:00:00') (default now), 
-        'length': Length of tide time series days (default 28.0),
+        'length': Length of predicted tide time series days (default 7.0),
         'interval': Time interval of tide time series minutes (default 60),
         'pacific': Use Pacific time zone instead of UTC (default True),
         'verbose': Print the predicted tides on screen (default False)
@@ -485,10 +485,10 @@ def run_pstide(**kwargs):
     Returns.
         dictionary of all results including the following:
             options: input options specified in kwargs
-            segdata: segment data for the constituents of the selected segment
-            ps_segments: dictionary of constituents in ps_segments.dat for all segments
-            segment_locations: dataframe of segment_locations.dat for all segments
-            df_tide: dataframe of tide predictions for the selected segment
+            segdata: segment data for the harmonic constituents of the selected segment
+            harmonic_constants: dictionary of harmonic constituents for all segments
+            segment_locations: dataframe of segment locations data for all segments
+            tides: dataframe of tide predictions for the selected segment
         
     '''
     
@@ -516,7 +516,7 @@ def run_pstide(**kwargs):
         'lon': None,
         'lat': None,
         'start': iso_date, 
-        'length': 28.0,
+        'length': 7.0,
         'interval': 60,
         'pacific': True,
         'title': True, 
@@ -543,8 +543,8 @@ def run_pstide(**kwargs):
         print(f'ERROR: Use keyword argument of either segment, or lon and lat')
         sys.exit()
         
-    # load the contents of ps_segments.dat into constituents dictionary
-    constituents = ps_segments()
+    # load the contents of ps_segments.dat into harmonic_constants dictionary
+    harmonic_constants = ps_segments()
 
     # load the contents of segment_locations.dat into df_segments dataframe
     df_segments = segment_locations()
@@ -594,7 +594,7 @@ def run_pstide(**kwargs):
     # if type(options['segment']) is int:
     if not isinstance(options['segment'], str):
         options['segment'] = str(options['segment'])
-    keys_list = list(constituents.keys())
+    keys_list = list(harmonic_constants.keys())
     ctrl = options['segment'] in keys_list
     if not ctrl:
         print(f'ERROR: Segment {options['segment']} is not a valid segment number between 1 and 589.')
@@ -623,7 +623,7 @@ def run_pstide(**kwargs):
     jd = cal_to_jd(year, month, day + hms_to_fday(hour, minute, second))
     jd_utc = lt_to_ut(jd) if options['pacific'] else jd
 
-    segdata = constituents[options['segment']]
+    segdata = harmonic_constants[options['segment']]
 
     tideseries = predict_tides(segdata['hcs'], jd_utc, options['interval'], options['length'])
 
@@ -675,9 +675,9 @@ def run_pstide(**kwargs):
     result = {
         'options': options,
         'segdata': segdata,
-        'ps_segments': ps_segments(),
+        'harmonic_constants': ps_segments(),
         'segment_locations': segment_locations(),
-        'df_tide': df
+        'tides': df
     }
         
     return result
@@ -1473,7 +1473,8 @@ def node2000(d2000):
 
 #----------------------------------------------------------------------------
 #                                                                           
-# ps_segments: function to return the contents of ps_segments.dat as a dictionary                                                           
+# ps_segments: function to return the contents of ps_segments.dat as a dictionary
+# harmonic constants for all contituents for all segments                                                           
 # 
 #----------------------------------------------------------------------------
 
@@ -1481,7 +1482,7 @@ def ps_segments():
     '''
     returns a dictionary of the contents of ps_segments.dat
     '''
-    return {'344': {'latitude': 48.076475,
+    result = {'344': {'latitude': 48.076475,
         'hcs': {'Q1': (0.07450873362445415, 250.1823287671233),
         'S2': (0.252, 37.40199999999999),
         'S1': (0.018, 22.100000000000023),
@@ -25799,6 +25800,8 @@ def ps_segments():
         'refstation': 'seattle.hcs',
         'name': 'East_Passage',
         'longitude': -122.39393000000001}}
+
+    return result.copy()
  
 #----------------------------------------------------------------------------
 #                                                                           
@@ -26396,7 +26399,7 @@ def segment_locations():
         [	589,"Dabob_Bay_Spur",10043,581,47.78058,-122.79323,47.78163,-122.83373	],]
         )
 
-    df = pd.DataFrame(array, columns=['segment', 'name','seg_up','seg_down','start_lat','start_lon','end_lat','end_lon'])
+    df = pd.DataFrame(array, columns=['segment','name','seg_up','seg_down','start_lat','start_lon','end_lat','end_lon'])
     df['segment'] = df['segment'].astype(int)
     df['seg_up'] = df['seg_up'].astype(int)
     df['seg_down'] = df['seg_down'].astype(int)
@@ -26407,6 +26410,6 @@ def segment_locations():
     df['mid_lat'] = (df['start_lat'] + df['end_lat']) / 2
     df['mid_lon'] = (df['start_lon'] + df['end_lon']) / 2
 
-    return df
+    return df.copy()
  
       
