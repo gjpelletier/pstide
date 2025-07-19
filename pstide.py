@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.55"
+__version__ = "2.1.56"
 
 #----------------------------------------------------------------------------
 #  pstide.py - Tide prediction Software for Puget Sound                    
@@ -485,8 +485,8 @@ def run_pstide(**kwargs):
     Returns.
         dictionary of all results including the following:
             options: input options specified in kwargs
-            segdata: segment data for the selected segment
-            ps_segments: dictionary of ps_segments.dat for all segments
+            segdata: segment data for the constituents of the selected segment
+            ps_segments: dictionary of constituents in ps_segments.dat for all segments
             segment_locations: dataframe of segment_locations.dat for all segments
             df_tide: dataframe of tide predictions for the selected segment
         
@@ -510,7 +510,7 @@ def run_pstide(**kwargs):
         dt = dt.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1)
     iso_date = dt.isoformat()
     
-    # Define default values of input data arguments
+    # Define default values of input options arguments
     defaults = {
         'segment': None, 
         'lon': None,
@@ -540,11 +540,11 @@ def run_pstide(**kwargs):
 
     ctrl = options['segment'] != None or (options['lat'] != None and options['lon'] != None)
     if not ctrl:
-        print(f'ERROR: Use keyword argument of either a segment, or lon and lat')
+        print(f'ERROR: Use keyword argument of either segment, or lon and lat')
         sys.exit()
         
-    # load the contents of ps_segments.dat into data dictionary
-    data = ps_segments()
+    # load the contents of ps_segments.dat into constituents dictionary
+    constituents = ps_segments()
 
     # load the contents of segment_locations.dat into df_segments dataframe
     df_segments = segment_locations()
@@ -594,7 +594,7 @@ def run_pstide(**kwargs):
     # if type(options['segment']) is int:
     if not isinstance(options['segment'], str):
         options['segment'] = str(options['segment'])
-    keys_list = list(data.keys())
+    keys_list = list(constituents.keys())
     ctrl = options['segment'] in keys_list
     if not ctrl:
         print(f'ERROR: Segment {options['segment']} is not a valid segment number between 1 and 589.')
@@ -623,7 +623,7 @@ def run_pstide(**kwargs):
     jd = cal_to_jd(year, month, day + hms_to_fday(hour, minute, second))
     jd_utc = lt_to_ut(jd) if options['pacific'] else jd
 
-    segdata = data[options['segment']]
+    segdata = constituents[options['segment']]
 
     tideseries = predict_tides(segdata['hcs'], jd_utc, options['interval'], options['length'])
 
