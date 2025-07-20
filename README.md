@@ -26,7 +26,7 @@ pip install git+https://github.com/gjpelletier/pstide.git --upgrade
 
 # Example 1. Tides in Budd Inlet for the next 7 days
 
-Copy/paste and run the following in Jupyter Notebook to produce the output and figure below showing the next 7 days of tides in Budd Inlet segment 44. This example shows how to specify the segment number, the time period (length) of the tide predictions. The defualt starting datetime is the current time. The tide predictions at the selected location are also stored in the result dictionary as a pandas dataframe in result['tides_selected'].
+Copy/paste and run the following in Jupyter Notebook to produce the output and figure below showing the next 7 days of tides in Budd Inlet segment 44. This example shows how to specify the segment number. The default time period (length) of the tide predictions is 7 days. The default starting datetime is the current time. The tide predictions at the selected location are stored in the result dictionary as a pandas dataframe in result['tides_selected'].
 ```
 from pstide import run_pstide
 result = run_pstide(segment=44)
@@ -61,7 +61,7 @@ Saved plot for selected segment in the following file:
 
 # Example 2. Tides at a specified longitide and latitude
 
-Copy/paste and run the following in Jupyter Notebook to produce the figure below showing the tides closest to lon=-122.615 and lat=47.885 in August 2025. This example shows how to specify the longitude (lon), latitude (lat), the starting datetime in ISO format, the time period (length) of the tide predictions, and how to use pacific=False to use datetimes in UTC. The tide predictions at the selected location are also stored in the result dictionary as a pandas dataframe in result['tides_selected'].
+Copy/paste and run the following in Jupyter Notebook to produce the figure below showing the tides closest to lon=-122.615 and lat=47.885 in August 2025. This example shows how to specify the longitude (lon), latitude (lat), the starting datetime in ISO format, the time period (length) of the tide predictions, and how to use pacific=False to use datetimes in UTC. The tide predictions at the selected location are stored in the result dictionary as a pandas dataframe in result['tides_selected'].
 ```
 from pstide import run_pstide
 result = run_pstide(lon=-122.615, lat=47.885, start='2025-08-01T00:00:00', length=31, pacific=False)
