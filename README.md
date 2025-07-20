@@ -66,6 +66,32 @@ Copy/paste and run the following in Jupyter Notebook to produce the figure below
 from pstide import run_pstide
 result = run_pstide(lon=-122.615, lat=47.885, start='2025-08-01T00:00:00', length=31, pacific=False)
 ```
+The following output is produced:
+```
+Calculating tides...
+
+Puget Sound Tide Model: Tide Predictions
+
+Segment Index: 518 (Hood_North)
+Longitude: -122.594790  Latitude: 47.872545
+Minor constituents inferred from seattle.hcs
+Starting time: 2025-08-31 22:59 UTC
+Time step: 60.00 min  Length: 31.00 days
+Mean water level: 1.84 m
+
+Predictions generated: Sun Jul 20 12:42:11 2025 (System)
+Heights in meters above MLLW
+Prediction date and time in Universal Time (UTCn
+
+Saved tides at the selected segment in the following file (meters and feet MLLW):
+/mnt/c/z/python/pstide_v3/pstide_selected_segment.csv
+
+Saved tides at all segments in the following file (meters MLLW):
+/mnt/c/z/python/pstide_v3/pstide_all_segments.csv
+
+Saved plot for selected segment in the following file:
+/mnt/c/z/python/pstide_v3/pstide_selected_segment.png
+```
 <img width="2600" height="1639" alt="pstide_output" src="https://github.com/user-attachments/assets/d6d5df74-10ee-4f6a-a649-faa82c709d0b" />
 
 # Example 3. Map the locations of model segments
