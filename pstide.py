@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "2.1.58"
+__version__ = "3.1.1"
 
 #----------------------------------------------------------------------------
 #  pstide.py - Tide prediction Software for Puget Sound                    
@@ -334,11 +334,6 @@ END OF README.txt for v 1.1.1
 
 import sys
 import os
-# import pickle
-# from argparse import ArgumentParser
-# from time import ctime
-# from calendar import jd_to_cal, cal_to_jd, jd_to_ISO, lt_to_ut, ut_to_lt, now, hms_to_fday, fday_to_hms
-# from tidefun import predict_tides
 
 # ----------------------------- Date Conversion -----------------------------
 def string_to_date(datetext):
@@ -353,102 +348,6 @@ def is_valid_date(datetext):
         return True
     except Exception:
         return False
-
-# ----------------------------- Title Printing -----------------------------
-def print_title(fout, segment, segdata, datetext, options):
-    from time import ctime
-    name = segdata['name']
-    refstation = segdata['refstation']
-    lon, lat = segdata['longitude'], segdata['latitude']
-    mean = segdata['hcs']['mean']
-    tzname = "Local" if options['pacific'] else "JD" if options['julian'] else "UTC"
-    delim = options['delimiter']
-
-    if options['outfile']:
-
-        fout.write(f"Puget Sound Tide Model: Tide Predictions\n")
-        fout.write(f"Segment Index: {segment} ({name})\n")
-        fout.write(f"Longitude: {lon:.6f}  Latitude: {lat:.6f}\n")
-        fout.write(f"Minor constituents inferred from {refstation}\n")
-        fout.write(f"Starting time: {datetext}\n")
-        fout.write(f"Time step: {options['interval']:.2f} min  Length: {options['length']:.2f} days\n")
-        fout.write(f"Mean water level: {mean * (3.2808 if options['feet'] else 1):.2f} {'ft' if options['feet'] else 'm'}\n\n")
-        fout.write(f"Predictions generated: {ctime()} (System)\n")
-        fout.write(f"Heights in {'feet' if options['feet'] else 'meters'} above MLLW\n")
-
-        if tzname == "UTC":
-            fout.write(f"Prediction date and time in Universal Time (UTC)\n")
-            fout.write(f"\nDatetime{delim}Height\n")
-        elif tzname == "Local":
-            fout.write(f"Prediction date and time in Pacific Time (PST or PDT)\n")
-            fout.write(f"\nDatetime{delim}Height\n")
-        else:
-            fout.write("Prediction date and time in Julian Days (JD)\n")
-            fout.write(f"\nDay{delim}Height\n")
-
-    if options['verbose']:
-
-        print(f"Puget Sound Tide Model: Tide Predictions\n")
-        print(f"Segment Index: {segment} ({name})")
-        print(f"Longitude: {lon:.6f}  Latitude: {lat:.6f}")
-        print(f"Minor constituents inferred from {refstation}")
-        print(f"Starting time: {datetext}")
-        print(f"Time step: {options['interval']:.2f} min  Length: {options['length']:.2f} days")
-        print(f"Mean water level: {mean * (3.2808 if options['feet'] else 1):.2f} {'ft' if options['feet'] else 'm'}\n")
-        print(f"Predictions generated: {ctime()} (System)")
-        print(f"Heights in {'feet' if options['feet'] else 'meters'} above MLLW")
-    
-        if tzname == "UTC":
-            print(f"Prediction date and time in Universal Time (UTC)\n")
-            # print(f"\nDatetime{delim}Height\n")
-        elif tzname == "Local":
-            print(f"Prediction date and time in Pacific Time (PST or PDT)\n")
-            # print(f"\nDatetime{delim}Height\n")
-        else:
-            print("Prediction date and time in Julian Days (JD)\n")
-            # print(f"\nDay{delim}Height\n")
-
-# ----------------------------- Tide Printing -----------------------------
-def print_tide(fout, tide, options, df):
-    '''
-    append row of tide predictions to output file and df
-    '''
-    from pstide import ut_to_lt, jd_to_ISO, jd_to_cal, fday_to_hms
-    from datetime import datetime
-    import pytz
-
-    jd = tide[0]
-    height = tide[1]
-    delim = options['delimiter']
-    height_str = f"{height * (3.2808 if options['feet'] else 1):.2f}" if options['feet'] else f"{height:.3f}"
-
-    if options['pacific']:
-        jd_local, zone = ut_to_lt(jd)
-        datetext = jd_to_ISO(jd_local, zone, "minute")
-    elif options['julian']:
-        datetext = f"{jd:12.4f}"
-    else:
-        year, month, fday = jd_to_cal(jd)
-        hour, minute, _ = fday_to_hms(fday)
-        datetext = f"{year:04d}-{month:02d}-{int(fday):02d} {hour:02d}:{minute:02d} UTC"
-
-    # append row to output csv
-    if options['outfile']:
-        # append row to output file
-        fout.write(f"{datetext}{delim}{height_str}\n")
-
-    # append row to df
-    if options['pacific']:
-        dt = datetime.strptime(datetext, '%Y-%b-%d %H:%M %Z')
-        timezone = pytz.timezone('US/Pacific')
-        localized_dt = timezone.localize(dt)
-    elif options['julian']:
-        localized_dt = float(datetext)
-    else:
-        dt = datetime.strptime(datetext, '%Y-%m-%d %H:%M %Z')
-        timezone = pytz.timezone('UTC')
-        localized_dt = timezone.localize(dt)
-    df.loc[len(df)] = [localized_dt, float(height_str)]
 
 def run_pstide(**kwargs):
     '''
@@ -473,12 +372,15 @@ def run_pstide(**kwargs):
         'length': Length of predicted tide time series days (default 7.0),
         'interval': Time interval of tide time series minutes (default 60),
         'pacific': Use Pacific time zone instead of UTC (default True),
-        'verbose': Print the predicted tides on screen (default False)
+        'verbose': Print the selected segment info on screen (default True)
         'show_plot': Make a plot of the tide height time series (default True)
         'title': Inlcude title and header info in output text file (default True), 
-        'outfile': Name of output text file to save (default 'pstide_output.csv'), 
-        'plotfile': Name of output plot file to save (default 'pstide_output.png'), 
-        'delimiter': Delimiter to use for output file (default ','), 
+        'outfile': Output filename for selected segment for tide in meters and feet MMLW
+            (default 'pstide_selected_segment.csv'), 
+        'outfile_all': Output filename for all segments for tide in meters MLLW 
+            (default 'pstide_all_segments.csv'), 
+        'plotfile': Plot filename for tide at selected segment in selected units 
+            (default 'pstide_selected_segment.png'), 
         'julian': Use Julian date format for outpout (default False),
         'feet': Use feet instead of meters for units of tide height (default False),
 
@@ -502,7 +404,15 @@ def run_pstide(**kwargs):
     import pandas as pd
     import numpy as np
     import matplotlib.pyplot as plt
+    import warnings
+    from pstide import ut_to_lt, jd_to_ISO, jd_to_cal, fday_to_hms
+    import time
+    from time import ctime
+    import pytz
 
+    # Set start time for calculating run time
+    start_time = time.time()
+            
     # get current datetime rounded to next nearest hour for default start
     iso_date = datetime.now().isoformat()    
     dt = datetime.fromisoformat(iso_date)
@@ -520,12 +430,12 @@ def run_pstide(**kwargs):
         'interval': 60,
         'pacific': True,
         'title': True, 
-        'outfile': 'pstide_output.csv', 
-        'plotfile': 'pstide_output.png', 
-        'delimiter': ',', 
+        'outfile_all': 'pstide_all_segments.csv', 
+        'outfile': 'pstide_selected_segment.csv', 
+        'plotfile': 'pstide_selected_segment.png', 
         'julian': False,
         'feet': False,
-        'verbose': False,
+        'verbose': True,
         'show_plot': True
         }
     
@@ -542,7 +452,16 @@ def run_pstide(**kwargs):
     if not ctrl:
         print(f'ERROR: Use keyword argument of either segment, or lon and lat')
         sys.exit()
-        
+
+    # get current working directory
+    cwd = os.getcwd()
+    if options['outfile']:
+        options['outfile'] = cwd + '/' + options['outfile']
+    if options['outfile_all']:
+        options['outfile_all'] = cwd + '/' + options['outfile_all']
+    if options['plotfile']:
+        options['plotfile'] = cwd + '/' + options['plotfile']
+    
     # load the contents of ps_segments.dat into harmonic_constants dictionary
     harmonic_constants = ps_segments()
 
@@ -559,11 +478,12 @@ def run_pstide(**kwargs):
     min_end_lat = min(df_segments['end_lat'])
     max_start_lat = max(df_segments['start_lat'])
     max_end_lat = max(df_segments['end_lat'])
-    min_lon = min(min_start_lon, min_end_lon) - buffer
-    max_lon = max(max_start_lon, max_end_lon) + buffer
-    min_lat = min(min_start_lat, min_end_lat) - buffer
-    max_lat = max(max_start_lat, max_end_lat) + buffer
-    map_extent = [min_lon,max_lon,min_lat,max_lat]
+    min_lon = min(min_start_lon, min_end_lon)
+    max_lon = max(max_start_lon, max_end_lon)
+    min_lat = min(min_start_lat, min_end_lat)
+    max_lat = max(max_start_lat, max_end_lat)
+    grid_extent = [min_lon,max_lon,min_lat,max_lat]
+    map_extent = [min_lon-buffer,max_lon+buffer,min_lat-buffer,max_lat+buffer]
 
     # Use input lon and lat to locate the nearest segment
     if options['lon'] != None and options['lat'] != None:
@@ -590,27 +510,7 @@ def run_pstide(**kwargs):
             print(f'Warning - the nearest segment to the target lat {target_lat} and lon {target_lon} is {closest_distance:.3f} degrees from the target')
         options['segment'] = df_segments.iloc[closest_index]['segment']
 
-    # convert segment to str and check that it is in the list of keys for ps_segments.dat
-    # if type(options['segment']) is int:
-    if not isinstance(options['segment'], str):
-        options['segment'] = str(options['segment'])
-    keys_list = list(harmonic_constants.keys())
-    ctrl = options['segment'] in keys_list
-    if not ctrl:
-        print(f'ERROR: Segment {options['segment']} is not a valid segment number between 1 and 589.')
-        sys.exit()
-
-    # initialize output file
-    try:
-        # fout = open(options['outfile'], 'w', encoding='utf-8') if options['outfile'] else sys.stdout
-        if options['outfile']:
-            fout = open(options['outfile'], 'w', encoding='utf-8')            
-    except IOError:
-        cwd = os.getcwd()
-        print(f'Unable to write output file {options['outfile']} in your working directory {cwd}')
-        sys.exit(1)
-
-    # Parse the ISO string into a datetime object
+    # Parse the ISO string into a datetime object and calc jd
     iso_string = options['start']
     dt = datetime.fromisoformat(iso_string)
     year = dt.year
@@ -619,47 +519,137 @@ def run_pstide(**kwargs):
     hour = dt.hour
     minute = dt.minute
     second = 0
-
     jd = cal_to_jd(year, month, day + hms_to_fday(hour, minute, second))
     jd_utc = lt_to_ut(jd) if options['pacific'] else jd
 
+    # -------- dataframe of tides in all segments --------
+
+    # Suppress warnings
+    warnings.filterwarnings('ignore')
+    print('Calculating tides...')
+    seg_list = df_segments['segment'].astype(str).tolist()
+    col_list = ['Julian Day','Datetime PST/PDT','Datetime UTC'] + seg_list
+    df = pd.DataFrame(columns=col_list)
+    keys_list = list(harmonic_constants.keys())
+    step_days = options['interval'] / (24.0 * 60.0)
+    series_length = int(options['length'] / step_days)
+    # print('len(keys_list): ', len(keys_list))
+    # print('series_length: ',series_length)
+    for i, key in enumerate(keys_list): 
+        segdata = harmonic_constants[key]
+        tideseries = predict_tides(segdata['hcs'], jd_utc, options['interval'], options['length'])
+        if i == 0:
+            # Julian Day
+            df['Julian Day'] = np.round(np.array(tideseries)[:, 0], decimals=8)
+            # Loop through rows to fill in datetimes in PST/PDT and UTC
+            for index, row in df.iterrows():
+                # Datetime US/Pacific PDT/PST
+                jd_local, zone = ut_to_lt(row['Julian Day'])
+                datetext = jd_to_ISO(jd_local, zone, "minute")
+                dt = datetime.strptime(datetext, '%Y-%b-%d %H:%M %Z')
+                timezone = pytz.timezone('US/Pacific')
+                localized_dt = timezone.localize(dt)
+                df.at[index, 'Datetime PST/PDT'] = localized_dt 
+                # Datetime UTC
+                year, month, fday = jd_to_cal(row['Julian Day'])
+                hour, minute, _ = fday_to_hms(fday)
+                datetext = f"{year:04d}-{month:02d}-{int(fday):02d} {hour:02d}:{minute:02d} UTC"
+                dt = datetime.strptime(datetext, '%Y-%m-%d %H:%M %Z')
+                timezone = pytz.timezone('UTC')
+                localized_dt = timezone.localize(dt)
+                df.at[index, 'Datetime UTC'] = localized_dt  
+            # 1st segment tides
+            df[key] = np.round(np.array(tideseries)[:, 1], decimals=8)
+        else:
+            # 2nd through last segment tides
+            df[key] = np.round(np.array(tideseries)[:, 1], decimals=8)
+    if options['outfile_all']:
+        df.to_csv(options['outfile_all'], index=False)  
+    
+    # -------- dataframe of tides at selected location --------
+
+    # convert segment to str and check that it is in the list of keys for ps_segments.dat
+    if not isinstance(options['segment'], str):
+        options['segment'] = str(options['segment'])
+    keys_list = list(harmonic_constants.keys())
+    ctrl = options['segment'] in keys_list
+    if not ctrl:
+        print(f'ERROR: Segment {options['segment']} is not a valid segment number between 1 and 589.')
+        sys.exit()
+    
+    # constituents at the selected segment
     segdata = harmonic_constants[options['segment']]
 
-    tideseries = predict_tides(segdata['hcs'], jd_utc, options['interval'], options['length'])
-
-    # Print results to the output stream
-    if options['title'] == True:
-        print_title(fout, options['segment'], segdata, options['start'], options)
-       
-    df = pd.DataFrame(columns=['Datetime', 'Height'])
-    # df.style.set_properties(**{'text-align': 'left'})
-    for tide in tideseries:
-        print_tide(fout, tide, options, df)
+    # df of tides at the selected segment
+    df_selected = pd.DataFrame(columns=['Julian Day','Datetime PST/PDT','Datetime UTC', 'Tide (meters MLLW)'])
+    df_selected['Julian Day'] = df['Julian Day']
+    df_selected['Datetime PST/PDT'] = df['Datetime PST/PDT']
+    df_selected['Datetime UTC'] = df['Datetime UTC']
+    df_selected['Tide (meters MLLW)'] = df[options['segment']]
+    df_selected['Tide (feet MLLW)'] = np.round(df[options['segment']] / 0.3048, decimals=8)
+    if options['outfile']:
+        df_selected.to_csv(options['outfile'], index=False)  
+    
+    # -------- print the station info at selected location --------
 
     if options['verbose']:
-        print(df.to_string(index=False))
+        name = segdata['name']
+        refstation = segdata['refstation']
+        lon, lat = segdata['longitude'], segdata['latitude']
+        mean = segdata['hcs']['mean']
+        tzname = "Local" if options['pacific'] else "JD" if options['julian'] else "UTC"
+        # delim = options['delimiter']
+        print('')
+        print(f"Puget Sound Tide Model: Tide Predictions\n")
+        print(f"Segment Index: {options['segment']} ({name})")
+        print(f"Longitude: {lon:.6f}  Latitude: {lat:.6f}")
+        print(f"Minor constituents inferred from {refstation}")
+        print(f"Starting time: {datetext}")
+        print(f"Time step: {options['interval']:.2f} min  Length: {options['length']:.2f} days")
+        print(f"Mean water level: {mean * (3.2808 if options['feet'] else 1):.2f} {'ft' if options['feet'] else 'm'}\n")
+        print(f"Predictions generated: {ctime()} (System)")
+        print(f"Heights in {'feet' if options['feet'] else 'meters'} above MLLW")    
+        if tzname == "UTC":
+            print(f"Prediction date and time in Universal Time (UTCn")
+            # print(f"\nDatetime{delim}Height\n")
+        elif tzname == "Local":
+            print(f"Prediction date and time in Pacific Time (PST or PDT)")
+            # print(f"\nDatetime{delim}Height\n")
+        else:
+            print("Prediction date and time in Julian Days (JD)")
+            # print(f"\nDay{delim}Height\n")
+        # print('')
+        if options['outfile']:
+            print(f'\nSaved tides at the selected segment in the following file (meters and feet MLLW):\n{options['outfile']}')
+        if options['outfile_all']:
+            print(f'\nSaved tides at all segments in the following file (meters MLLW):\n{options['outfile_all']}')
+        if options['plotfile']:
+            print(f'\nSaved plot for selected segment in the following file:\n{options['plotfile']}')
+        print('')
     
-    # if fout is not sys.stdout:
-    if options['outfile']:
-        # print('closing fout')
-        fout.close()
+    # -------- plot the tides at the selected location --------
 
     # optional plot of tide time series
     if options['show_plot']:
         # title_str = 'Tide Height at ' + segdata['name']
-        title_str = 'Tide Height at ' + segdata['name'] + ' (segment ' + options['segment'] + ')'
+        title_str = 'Tide at ' + segdata['name'] + ' (segment ' + options['segment'] + ')'
         if options['feet']:
-            ylabel_str = 'Tide Height (feet MLLW)'
+            y = df_selected['Tide (feet MLLW)']
+            ylabel_str = 'Tide (feet MLLW)'
         else:
-            ylabel_str = 'Tide Height (meters MLLW)'            
+            y = df_selected['Tide (meters MLLW)']
+            ylabel_str = 'Tide (meters MLLW)'            
         if options['pacific']:
+            x = df_selected['Datetime PST/PDT']
             xlabel_str = 'Date (US/Pacific PST or PDT)'
         elif options['julian']:
+            x = df_selected['Julian Day']
             xlabel_str = 'Julian Days (JD)'
         else:
+            x = df_selected['Datetime UTC']
             xlabel_str = 'Date (UTC)'            
         plt.figure(figsize=(10, 6))
-        plt.plot(df['Datetime'], df['Height'], label='Tide')
+        plt.plot(x, y, label='Tide')
         plt.title(title_str, fontsize=16)
         plt.xlabel(xlabel_str, fontsize=10)
         plt.ylabel(ylabel_str, fontsize=12)
@@ -671,15 +661,25 @@ def run_pstide(**kwargs):
             plt.savefig(options['plotfile'], 
                         dpi=300, bbox_inches='tight') 
         plt.show()
-
+    
+    # Restore warnings to normal
+    warnings.filterwarnings("default")
+    
     result = {
         'options': options,
         'segdata': segdata,
         'harmonic_constants': ps_segments(),
         'segment_locations': segment_locations(),
-        'tides': df
+        'tides_all': df,
+        'tides_selected': df_selected
     }
-        
+
+    # Print the run time
+    fit_time = time.time() - start_time
+    print('Done')
+    print(f"Time elapsed: {fit_time:.2f} sec")
+    print('')
+    
     return result
 
 def map_segments(
@@ -756,8 +756,6 @@ def map_segments(
 # Reference: Jean Meeus, _Astronomical Algorithms_, second edition,
 # 1998, Willmann-Bell, Inc.
 #------------------------------------------------------------------------------ 
-# from math import *
-# from time import gmtime
 
 # Calendar Constants (modify for your purposes)
 standard_timezone_name = 'PST'
@@ -767,10 +765,6 @@ daylight_timezone_offset = 7.0/24.0
 month_names = ('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')
 minutes_per_day = 60.0 * 24.0
 seconds_per_day = minutes_per_day * 60.0
-
-# class Error(Exception):
-#     """local exception class"""
-#     pass
 
 def cal_to_jd(yr, mo = 1, day = 1, gregorian = True):
     """Convert a date in the Julian or Gregorian calendars to the Julian Day Number (Meeus 7.1).
@@ -1127,7 +1121,6 @@ def now():
     jd = cal_to_jd(year, month, day)
     return(jd)
         
-
 def sidereal_time_greenwich(jd):
     """Return the mean sidereal time at Greenwich.
     
