@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "3.1.2"
+__version__ = "3.1.3"
 
 #----------------------------------------------------------------------------
 #  pstide.py - Tide prediction Software for Puget Sound                    
@@ -390,7 +390,8 @@ def run_pstide(**kwargs):
             segdata: segment data for the harmonic constituents of the selected segment
             harmonic_constants: dictionary of harmonic constituents for all segments
             segment_locations: dataframe of segment locations data for all segments
-            tides: dataframe of tide predictions for the selected segment
+            tides_all: dataframe of tide predictions for the all segments (meters MLLW)
+            tides_selected: dataframe of tide predictions for the selected segment
         
     '''
     
