@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "3.1.1"
+__version__ = "3.1.2"
 
 #----------------------------------------------------------------------------
 #  pstide.py - Tide prediction Software for Puget Sound                    
@@ -398,7 +398,6 @@ def run_pstide(**kwargs):
     import os
     import pickle
     from pstide import cal_to_jd, hms_to_fday, lt_to_ut, predict_tides
-    from pstide import print_title, print_tide
     from pstide import ps_segments, segment_locations
     from datetime import datetime, timedelta
     import pandas as pd
