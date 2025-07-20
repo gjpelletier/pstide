@@ -92,7 +92,7 @@ Saved tides at all segments in the following file (meters MLLW):
 Saved plot for selected segment in the following file:
 /mnt/c/z/python/pstide_v3/pstide_selected_segment.png
 ```
-<img width="2600" height="1639" alt="pstide_output" src="https://github.com/user-attachments/assets/d6d5df74-10ee-4f6a-a649-faa82c709d0b" />
+<img width="2600" height="1639" alt="pstide_selected_segment" src="https://github.com/user-attachments/assets/70311672-8b6e-42a4-bccd-a9597e347aa0" />
 
 # Example 3. Map the locations of model segments
 
