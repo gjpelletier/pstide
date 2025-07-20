@@ -26,16 +26,42 @@ pip install git+https://github.com/gjpelletier/pstide.git --upgrade
 
 # Example 1. Tides in Budd Inlet for the next 7 days
 
-Copy/paste and run the following in Jupyter Notebook to produce the figure below showing the next 7 days of tides in Budd Inlet segment 44. This example shows how to specify the segment number, the time period (length) of the tide predictions. The defualt starting datetime is the current time. The tide predictions are also stored in the result dictionary as a pandas dataframe in result['df_tide'].
+Copy/paste and run the following in Jupyter Notebook to produce the figure below showing the next 7 days of tides in Budd Inlet segment 44. This example shows how to specify the segment number, the time period (length) of the tide predictions. The defualt starting datetime is the current time. The tide predictions at the selected location are also stored in the result dictionary as a pandas dataframe in result['tides_selected'].
 ```
 from pstide import run_pstide
 result = run_pstide(segment=44)
 ```
-<img width="2552" height="1639" alt="pstide_output" src="https://github.com/user-attachments/assets/4772da93-b01d-4081-baaf-61c417539a85" />
+The following output is produced:
+```
+Calculating tides...
+
+Puget Sound Tide Model: Tide Predictions
+
+Segment Index: 44 (Budd_Inlet)
+Longitude: -122.902685  Latitude: 47.056320
+Minor constituents inferred from seattle.hcs
+Starting time: 2025-07-27 19:00 UTC
+Time step: 60.00 min  Length: 7.00 days
+Mean water level: 2.53 m
+
+Predictions generated: Sun Jul 20 12:37:05 2025 (System)
+Heights in meters above MLLW
+Prediction date and time in Pacific Time (PST or PDT)
+
+Saved tides at the selected segment in the following file (meters and feet MLLW):
+/mnt/c/z/python/pstide_v3/pstide_selected_segment.csv
+
+Saved tides at all segments in the following file (meters MLLW):
+/mnt/c/z/python/pstide_v3/pstide_all_segments.csv
+
+Saved plot for selected segment in the following file:
+/mnt/c/z/python/pstide_v3/pstide_selected_segment.png
+```
+<img width="2552" height="1639" alt="pstide_selected_segment" src="https://github.com/user-attachments/assets/84891d10-4e7b-4e88-9be5-090c0def0dee" />
 
 # Example 2. Tides at a specified longitide and latitude
 
-Copy/paste and run the following in Jupyter Notebook to produce the figure below showing the tides closest to lon=-122.615 and lat=47.885 in August 2025. This example shows how to specify the longitude (lon), latitude (lat), starting datetime in ISO format, and the time period (length) of the tide predictions, and how to use pacific=False to use datetimes in UTC. The tide predictions are also stored in the result dictionary as a pandas dataframe in result['df_tide'].
+Copy/paste and run the following in Jupyter Notebook to produce the figure below showing the tides closest to lon=-122.615 and lat=47.885 in August 2025. This example shows how to specify the longitude (lon), latitude (lat), the starting datetime in ISO format, the time period (length) of the tide predictions, and how to use pacific=False to use datetimes in UTC. The tide predictions at the selected location are also stored in the result dictionary as a pandas dataframe in result['tides_selected'].
 ```
 from pstide import run_pstide
 result = run_pstide(lon=-122.615, lat=47.885, start='2025-08-01T00:00:00', length=31, pacific=False)
