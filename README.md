@@ -64,7 +64,7 @@ Saved plot for selected segment in the following file:
 Copy/paste and run the following in Jupyter Notebook to produce the figure below showing the tides closest to lon=-122.615 and lat=47.885 in August 2025. This example shows how to specify the longitude (lon), latitude (lat), the starting datetime in ISO format, the time period (length) of the tide predictions, and how to use pacific=False to use datetimes in UTC. The tide predictions at the selected location are stored in the result dictionary as a pandas dataframe in result['tides_selected'].
 ```
 from pstide import run_pstide
-result = run_pstide(lon=-122.615, lat=47.885, start='2025-08-01T00:00:00', length=31, pacific=False)
+result = run_pstide(lon=-122.615, lat=47.885, start='2025-08-01', length=31, pacific=False)
 ```
 The following output is produced:
 ```
