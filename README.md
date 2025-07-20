@@ -26,7 +26,7 @@ pip install git+https://github.com/gjpelletier/pstide.git --upgrade
 
 # Example 1. Tides in Budd Inlet for the next 7 days
 
-Copy/paste and run the following in Jupyter Notebook to produce the figure below showing the next 7 days of tides in Budd Inlet segment 44. This example shows how to specify the segment number, the time period (length) of the tide predictions. The defualt starting datetime is the current time. The tide predictions at the selected location are also stored in the result dictionary as a pandas dataframe in result['tides_selected'].
+Copy/paste and run the following in Jupyter Notebook to produce the output and figure below showing the next 7 days of tides in Budd Inlet segment 44. This example shows how to specify the segment number, the time period (length) of the tide predictions. The defualt starting datetime is the current time. The tide predictions at the selected location are also stored in the result dictionary as a pandas dataframe in result['tides_selected'].
 ```
 from pstide import run_pstide
 result = run_pstide(segment=44)
