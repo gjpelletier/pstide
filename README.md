@@ -134,6 +134,19 @@ run_pstide(**kwargs)
             (default 'pstide_selected_segment.png'),
         'julian': Use Julian date format for outpout (default False),
         'feet': Use feet instead of meters for units of tide height (default False),
+        'grid': Interpolate gridded pstide predictions to subgrid of LiveOcean
+            ROMS grid (default False),
+        'frames_dir': Name of folder to store animiation frames of gridded predictions
+            (default 'frames'),
+        'fps': Frame rate of animated gif of gridded predictions (default 10 fps),
+        'dpi': Resolution of the animated gif of gridded predictions (default 100 dpi),
+        'cmap': Colormap for animated gif of gridded predictions (Default 'viridis_r')
+        'show_gif': Display the animiated gif of gridded predictions on screen
+            (default False),
+        'gifname': File name for animated gif of gridded predictions
+            (default 'pstide_gridded_predictions.gif'),
+        'ncfile': File name for netcdf of gridded predictions
+            (default 'pstide_gridded_predictions.nc')
 
     Returns.
         dictionary of all results including the following:
@@ -143,6 +156,8 @@ run_pstide(**kwargs)
             segment_locations: dataframe of segment locations data for all segments
             tides_all: dataframe of tide predictions for the all segments (meters MLLW)
             tides_selected: dataframe of tide predictions for the selected segment
+            gridded_predictions: xarray dataset of tide predictions
+                interpolated to LiveOcean ROMS subgrid
 ```
 
 # Detailed maps of segment locations
