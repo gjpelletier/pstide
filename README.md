@@ -127,11 +127,11 @@ run_pstide(**kwargs)
         'show_plot': Make a plot of the tide height time series (default True)
         'title': Inlcude title and header info in output text file (default True),
         'outfile': Output filename for selected segment for tide in meters and feet MMLW
-            (default 'pstide_selected_segment.csv'),
+            (default 'tides_selected_segment.csv'),
         'outfile_all': Output filename for all segments for tide in meters MLLW
-            (default 'pstide_all_segments.csv'),
+            (default 'tides_all_segments.csv'),
         'plotfile': Plot filename for tide at selected segment in selected units
-            (default 'pstide_selected_segment.png'),
+            (default 'tides_selected_segment.png'),
         'julian': Use Julian date format for outpout (default False),
         'feet': Use feet instead of meters for units of tide height (default False),
         'grid': Interpolate gridded pstide predictions to subgrid of LiveOcean
@@ -144,9 +144,9 @@ run_pstide(**kwargs)
         'show_gif': Display the animiated gif of gridded predictions on screen
             (default False),
         'gifname': File name for animated gif of gridded predictions
-            (default 'pstide_gridded_predictions.gif'),
+            (default 'tides_gridded.gif'),
         'ncfile': File name for netcdf of gridded predictions
-            (default 'pstide_gridded_predictions.nc')
+            (default 'tides_gridded.nc')
 
     Returns.
         dictionary of all results including the following:
@@ -154,8 +154,8 @@ run_pstide(**kwargs)
             segdata: segment data for the harmonic constituents of the selected segment
             harmonic_constants: dictionary of harmonic constituents for all segments
             segment_locations: dataframe of segment locations data for all segments
-            tides_all: dataframe of tide predictions for the all segments (meters MLLW)
-            tides_selected: dataframe of tide predictions for the selected segment
+            tides_all_segments: dataframe of tide predictions for the all segments (meters MLLW)
+            tides_selected_segment: dataframe of tide predictions for the selected segment
             tides_gridded: xarray dataset of tide predictions interpolated
                 to LiveOcean ROMS subgrid
 ```
