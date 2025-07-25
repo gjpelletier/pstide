@@ -94,7 +94,15 @@ Saved plot for selected segment in the following file:
 ```
 <img width="2600" height="1639" alt="pstide_selected_segment" src="https://github.com/user-attachments/assets/70311672-8b6e-42a4-bccd-a9597e347aa0" />
 
-# Example 3. Map the locations of model segments
+# Example 3. Gridded prediction of tides
+
+Next we show how to predict the time series of tides in all of the segments, and interpolate the predicted tide series to a grid of the entire Puget Sound. The grid we are using is the subset of the LiveOcean ROMS grid that contains the pstide segments. Using grid=True activates pstide to perform the gridded prediction of tides. This method produces a netcdf file named pstide_gridded_predictions.nc which contains the tides in every grid cell at every time step. This method also produces the animated gif of the predictions that is shown below.   
+```
+from pstide import run_pstide
+result = run_pstide(grid=True, start='2024-08-01', interval=5, length=1.0)
+```
+
+# Example 4. Map the locations of model segments
 
 Copy/paste and run the following in Jupyter Notebook to produce a map showing the locations of the model segments. The map will be saved in the working directory with the default name 'pstide_segments.png'. The dataframe of information about segment locations is saved when you use run_pstide in result['segment_locations']
 ```
