@@ -40,22 +40,13 @@ Puget Sound Tide Model: Tide Predictions
 Segment Index: 44 (Budd_Inlet)
 Longitude: -122.902685  Latitude: 47.056320
 Minor constituents inferred from seattle.hcs
-Starting time: 2025-07-27 19:00 UTC
+Starting time: 2025-08-01 01:59 UTC
 Time step: 60.00 min  Length: 7.00 days
 Mean water level: 2.53 m
 
-Predictions generated: Sun Jul 20 12:37:05 2025 (System)
+Predictions generated: Thu Jul 24 19:29:47 2025 (System)
 Heights in meters above MLLW
 Prediction date and time in Pacific Time (PST or PDT)
-
-Saved tides at the selected segment in the following file (meters and feet MLLW):
-/mnt/c/z/python/pstide_v3/pstide_selected_segment.csv
-
-Saved tides at all segments in the following file (meters MLLW):
-/mnt/c/z/python/pstide_v3/pstide_all_segments.csv
-
-Saved plot for selected segment in the following file:
-/mnt/c/z/python/pstide_v3/pstide_selected_segment.png
 ```
 <img width="2552" height="1639" alt="pstide_selected_segment" src="https://github.com/user-attachments/assets/84891d10-4e7b-4e88-9be5-090c0def0dee" />
 
@@ -79,18 +70,9 @@ Starting time: 2025-08-31 22:59 UTC
 Time step: 60.00 min  Length: 31.00 days
 Mean water level: 1.84 m
 
-Predictions generated: Sun Jul 20 12:42:11 2025 (System)
+Predictions generated: Thu Jul 24 19:29:53 2025 (System)
 Heights in meters above MLLW
-Prediction date and time in Universal Time (UTCn
-
-Saved tides at the selected segment in the following file (meters and feet MLLW):
-/mnt/c/z/python/pstide_v3/pstide_selected_segment.csv
-
-Saved tides at all segments in the following file (meters MLLW):
-/mnt/c/z/python/pstide_v3/pstide_all_segments.csv
-
-Saved plot for selected segment in the following file:
-/mnt/c/z/python/pstide_v3/pstide_selected_segment.png
+Prediction date and time in Universal Time (UTC)
 ```
 <img width="2600" height="1639" alt="pstide_selected_segment" src="https://github.com/user-attachments/assets/70311672-8b6e-42a4-bccd-a9597e347aa0" />
 
