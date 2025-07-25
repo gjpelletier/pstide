@@ -78,7 +78,7 @@ Prediction date and time in Universal Time (UTC)
 
 # Example 3. Gridded prediction of tides
 
-Next we show how to predict the time series of tides in all of the segments, and interpolate the predicted tide series to a grid of the entire Puget Sound. The grid we are using is the subset of the LiveOcean ROMS grid that contains the pstide segments. Using grid=True activates pstide to perform the gridded prediction of tides. This method produces a netcdf file named pstide_gridded_predictions.nc which contains the tides in every grid cell at every time step. This method also produces the animated gif of the predictions that is shown below.   
+Next we show how to predict the time series of tides in all of the segments, and interpolate the predicted tide series to a grid of the entire Puget Sound. The grid we are using is the subset of the LiveOcean ROMS grid that contains the pstide segments. Using grid=True activates pstide to perform the gridded prediction of tides. This method produces a netcdf file named pstide_gridded_predictions.nc which contains the tides in every grid cell at every time step. An xarray dataset of the gridded predictions is added to the result dictionary. This method also produces the animated gif of the predictions that is shown below.   
 ```
 from pstide import run_pstide
 result = run_pstide(grid=True, start='2024-08-01', interval=5, fps=10, length=1.0)
