@@ -156,8 +156,8 @@ run_pstide(**kwargs)
             segment_locations: dataframe of segment locations data for all segments
             tides_all: dataframe of tide predictions for the all segments (meters MLLW)
             tides_selected: dataframe of tide predictions for the selected segment
-            gridded_predictions: xarray dataset of tide predictions
-                interpolated to LiveOcean ROMS subgrid
+            tides_gridded: xarray dataset of tide predictions interpolated
+                to LiveOcean ROMS subgrid
 ```
 
 # Detailed maps of segment locations
