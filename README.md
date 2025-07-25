@@ -101,7 +101,7 @@ Next we show how to predict the time series of tides in all of the segments, and
 from pstide import run_pstide
 result = run_pstide(grid=True, start='2024-08-01', interval=5, fps=10, length=1.0)
 ```
-![pstide_gridded_predictions](https://github.com/user-attachments/assets/a1e85c34-cc3a-4241-bbb2-00e6c6450cde)
+![pstide_gridded_predictions](https://github.com/user-attachments/assets/ef76dc3c-b4d1-4653-a853-ba7717aa69a0)
 
 # Example 4. Map the locations of model segments
 
