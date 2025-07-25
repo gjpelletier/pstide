@@ -99,9 +99,9 @@ Saved plot for selected segment in the following file:
 Next we show how to predict the time series of tides in all of the segments, and interpolate the predicted tide series to a grid of the entire Puget Sound. The grid we are using is the subset of the LiveOcean ROMS grid that contains the pstide segments. Using grid=True activates pstide to perform the gridded prediction of tides. This method produces a netcdf file named pstide_gridded_predictions.nc which contains the tides in every grid cell at every time step. This method also produces the animated gif of the predictions that is shown below.   
 ```
 from pstide import run_pstide
-result = run_pstide(grid=True, start='2024-08-01', interval=5, length=1.0)
+result = run_pstide(grid=True, start='2024-08-01', interval=5, fps=10, length=1.0)
 ```
-![pstide_gridded_predictions](https://github.com/user-attachments/assets/8b1770ef-2cd5-4a35-a6f2-97adc3c5a2de)
+![pstide_gridded_predictions](https://github.com/user-attachments/assets/a1e85c34-cc3a-4241-bbb2-00e6c6450cde)
 
 # Example 4. Map the locations of model segments
 
