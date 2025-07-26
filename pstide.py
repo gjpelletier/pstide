@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "3.1.25"
+__version__ = "3.1.26"
 
 #----------------------------------------------------------------------------
 #  pstide.py - Tide prediction Software for Puget Sound                    
@@ -26995,13 +26995,15 @@ def segment_locations():
 
     return df.copy()
  
-def liveocean_grid(save_nc=False):
+def liveocean_grid(save_nc=False, plot_mask=False, plot_h=False):
     '''
     Returns an xarray dataset of the following variables of the LiveOcean ROMS subgrid for pstide:
         xi_rho, eta_rho, lon_rho, lat_rho, mask_rho, h, pm, pn, f
     
     Optional Keyword Args:
         save_nc: save a netcdf file of the xarray dataset of the grid (default False)    
+        plot_mask: display a plot of mask_rho (default False)
+        plot_h: display a plot of h (default False)
     '''
     import numpy as np
     import xarray as xr
@@ -29344,7 +29346,47 @@ def liveocean_grid(save_nc=False):
 
     if save_nc:
         # save as nc file
-        xr_grid.to_netcdf('liveocean_pugetsound_subgrid.nc')
+        xr_grid.to_netcdf('liveocean_grid_pugetsound.nc')
+
+    if plot_mask:
+        grid_x = np.array(xr_grid['lon_rho'].values)
+        grid_y = np.array(xr_grid['lat_rho'].values)
+        grid_mask = np.array(xr_grid['mask_rho'].values)
+        fig = plt.figure(figsize=(10,11))
+        ax = fig.add_subplot(1,1,1,projection=ccrs.PlateCarree())
+        map_extent=[-123.2, -122.2, 47.0, 48.45]
+        ax.set_extent(map_extent, crs=ccrs.PlateCarree())
+        plt.pcolormesh(grid_x,grid_y,grid_mask,transform=ccrs.PlateCarree())
+        # Add gridlines with latitude and longitude ticks
+        gl = ax.gridlines(draw_labels=True, linestyle='--', color='gray', alpha=0.5)
+        gl.top_labels = False
+        gl.right_labels = False
+        gl.xlabel_style = {'size': 10, 'color': 'black'}
+        gl.ylabel_style = {'size': 10, 'color': 'black'}
+        plt.title("Subset of LiveOcean ROMS grid - mask_rho", fontsize=16);   
+        cbar = plt.colorbar(shrink=1.0)
+        cbar.set_label('land mask of rho points (0=land, 1=water)',fontsize=16)
+        cbar.ax.tick_params(labelsize=14) 
+
+    if plot_h:
+        grid_x = np.array(xr_grid['lon_rho'].values)
+        grid_y = np.array(xr_grid['lat_rho'].values)
+        grid_h = np.array(xr_grid['h'].values)
+        fig = plt.figure(figsize=(10,11))
+        ax = fig.add_subplot(1,1,1,projection=ccrs.PlateCarree())
+        map_extent=[-123.2, -122.2, 47.0, 48.45]
+        ax.set_extent(map_extent, crs=ccrs.PlateCarree())
+        plt.pcolormesh(grid_x,grid_y,grid_h,transform=ccrs.PlateCarree())
+        # Add gridlines with latitude and longitude ticks
+        gl = ax.gridlines(draw_labels=True, linestyle='--', color='gray', alpha=0.5)
+        gl.top_labels = False
+        gl.right_labels = False
+        gl.xlabel_style = {'size': 10, 'color': 'black'}
+        gl.ylabel_style = {'size': 10, 'color': 'black'}
+        plt.title("Subset of LiveOcean ROMS grid - h", fontsize=16);   
+        cbar = plt.colorbar(shrink=1.0)
+        cbar.set_label('Bathymetry at rho points (meters)',fontsize=16)
+        cbar.ax.tick_params(labelsize=14) 
             
     return xr_grid
 
