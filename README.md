@@ -24,12 +24,12 @@ If you are installing for the first time, or upgrading from a previous installat
 pip install git+https://github.com/gjpelletier/pstide.git --upgrade
 ```
 
-# Example 1. Tides in Budd Inlet for the next 7 days
+# Example 1. Tides in Seattle for the next 7 days
 
-Copy/paste and run the following in Jupyter Notebook to produce the output and figure below showing the next 7 days of tides in Budd Inlet segment 44. This example shows how to specify the segment number. The default time period (length) of the tide predictions is 7 days. The default starting datetime is the current time. The tide predictions at the selected location are stored in the result dictionary as a pandas dataframe in result['tides_selected_segment'].
+Copy/paste and run the following in Jupyter Notebook to produce the output and figure below showing the next 7 days of tides in Elliott Bay segment 497. This example shows how to specify the segment number. The default time period (length) of the tide predictions is 7 days. The default starting datetime is the current time. The tide predictions at the selected location are stored in the result dictionary as a pandas dataframe in result['tides_selected_segment'].
 ```
 from pstide import run_pstide
-result = run_pstide(segment=44)
+result = run_pstide(segment=497)
 ```
 The following output is produced:
 ```
@@ -37,18 +37,18 @@ Calculating tides...
 
 Puget Sound Tide Model: Tide Predictions
 
-Segment Index: 44 (Budd_Inlet)
-Longitude: -122.902685  Latitude: 47.056320
+Segment Index: 497 (Elliott_Bay)
+Longitude: -122.347915  Latitude: 47.591075
 Minor constituents inferred from seattle.hcs
-Starting time: 2025-08-01 01:59 UTC
+Starting time: 2025-08-02 22:59 UTC
 Time step: 60.00 min  Length: 7.00 days
-Mean water level: 2.53 m
+Mean water level: 2.02 m
 
-Predictions generated: Thu Jul 24 19:29:47 2025 (System)
+Predictions generated: Sat Jul 26 16:57:22 2025 (System)
 Heights in meters above MLLW
 Prediction date and time in Pacific Time (PST or PDT)
 ```
-<img width="2552" height="1639" alt="pstide_selected_segment" src="https://github.com/user-attachments/assets/84891d10-4e7b-4e88-9be5-090c0def0dee" />
+<img width="2651" height="1639" alt="tides_selected_segment" src="https://github.com/user-attachments/assets/6802f693-4244-475d-b77d-7f689892c076" />
 
 # Example 2. Tides at a specified longitide and latitude
 
