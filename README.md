@@ -24,7 +24,7 @@ If you are installing for the first time, or upgrading from a previous installat
 pip install git+https://github.com/gjpelletier/pstide.git --upgrade
 ```
 
-# Example 1. Tides in Elliott Bay (Seattle) for the next 7 days
+# Example 1. Tides in Elliott Bay for the next 7 days
 
 Copy/paste and run the following in Jupyter Notebook to produce the output and figure below showing the next 7 days of tides in Elliott Bay segment 497. This example shows how to specify the segment number. The default time period (length) of the tide predictions is 7 days. The default starting datetime is the current time. The tide predictions at the selected location are stored in the result dictionary as a pandas dataframe in result['tides_selected_segment'].
 ```
