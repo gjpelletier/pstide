@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = "3.1.26"
+__version__ = "3.1.27"
 
 #----------------------------------------------------------------------------
 #  pstide.py - Tide prediction Software for Puget Sound                    
@@ -13,6 +13,8 @@ __version__ = "3.1.26"
 #  Modified to run in Python 3.x by 
 #  Greg Pelletier
 #  Jul 15 2025
+#
+#  v3.1.27 updated 9-Feb-2026 to fix issue with timezone parsing change in Python 3.13
 #     
 #----------------------------------------------------------------------------
 
@@ -40,7 +42,8 @@ __version__ = "3.1.26"
 # and are not applicable to the current version that is 
 # modified by Greg Pelletier to run in Python 3.x. The updated version retains
 # nearly all of the functionality of the original version, and also adds
-# functionality with modern python libraries (e.g. pandas and matplotlib)
+# functionality with modern python libraries 
+# (e.g. numpy, pandas, xarray, and matplotlib)
 #
 #----------------------------------------------------------------------------
 '''
@@ -577,7 +580,12 @@ def run_pstide(**kwargs):
                 # Datetime US/Pacific PDT/PST
                 jd_local, zone = ut_to_lt(row['Julian Day'])
                 datetext = jd_to_ISO(jd_local, zone, "minute")
-                dt = datetime.strptime(datetext, '%Y-%b-%d %H:%M %Z')
+
+                # # gp replace the next line because it fails in Python 3.13 due to change in timezone parsing 
+                # dt = datetime.strptime(datetext, '%Y-%b-%d %H:%M %Z')
+                dt_clean = datetext.rsplit(" ", 1)[0]   # drop timezone
+                dt = datetime.strptime(dt_clean, '%Y-%b-%d %H:%M')
+
                 timezone = pytz.timezone('US/Pacific')
                 localized_dt = timezone.localize(dt)
                 df.at[index, 'Datetime PST/PDT'] = localized_dt 
@@ -585,9 +593,16 @@ def run_pstide(**kwargs):
                 year, month, fday = jd_to_cal(row['Julian Day'])
                 hour, minute, _ = fday_to_hms(fday)
                 datetext = f"{year:04d}-{month:02d}-{int(fday):02d} {hour:02d}:{minute:02d} UTC"
-                dt = datetime.strptime(datetext, '%Y-%m-%d %H:%M %Z')
+
+                # # gp replace the next 3 lines because it fails in Python 3.13 due to change in timezone parsing 
+                # dt = datetime.strptime(datetext, '%Y-%m-%d %H:%M %Z')
+                # timezone = pytz.timezone('UTC')
+                # localized_dt = timezone.localize(dt)
+                dt_clean = datetext.rsplit(" ", 1)[0]   # drop "UTC"
+                dt = datetime.strptime(dt_clean, '%Y-%m-%d %H:%M')
                 timezone = pytz.timezone('UTC')
                 localized_dt = timezone.localize(dt)
+
                 df.at[index, 'Datetime UTC'] = localized_dt  
             # 1st segment tides
             df[key] = np.round(np.array(tideseries)[:, 1], decimals=8)
