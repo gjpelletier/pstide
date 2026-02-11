@@ -4,7 +4,7 @@ A Python module for prediction of tides within Puget Sound
 
 Adapted from the pstide.py module for Python 2.x by David Finlayson
 
-Modified to run in Python 3.x by Greg Pelletier
+Modified to run in Python 3.x by Greg Pelletier (tested up to Python 3.13)
 
 The Puget Sound Tide Channel Model was first published in the late 1980's:
 
